@@ -9,8 +9,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        allPicture:["1000399983051341824","1000780891931672576","1001004050991562752","1001285106525507591"],
-        updatedPicture: ["1000780891931672576"],
+        pictures:["1000399983051341824","1000780891931672576","1001004050991562752","1001285106525507591"],
+        updatedPictures: ["1000780891931672576"],
         user: null,
         picture: null,
         loading: null,
@@ -136,6 +136,12 @@ export const store = new Vuex.Store({
         picture(state){
             return state.picture
         },
+        pictures(state){
+            return state.pictures
+        },
+        updatedPictures(state){
+            return state.updatedPictures
+        }
 
     }
 })
