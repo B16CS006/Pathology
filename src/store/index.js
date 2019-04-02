@@ -9,6 +9,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
+        allPicture:["1000399983051341824","1000780891931672576","1001004050991562752","1001285106525507591"],
+        updatedPicture: ["1000780891931672576"],
         user: null,
         picture: null,
         loading: null,
@@ -83,20 +85,25 @@ export const store = new Vuex.Store({
         clearError({commit}){
             commit('clearError')
         },
-        getPicture({commit}, pictureId){
+        getPicture({commit, state}, pictureId){
+
+            if(state.picture !=null && state.picture.id == pictureId){
+                return
+            }
+
             let description = null
             let link = null
 
             firebase.database().ref('UserText/' + pictureId).once('value')
             .then((data) => {
                 description = data.val()
-                console.log('descprition',description)
+                // console.log('descprition',description)
             }).then(() => {
-                console.log('storage')
+                // console.log('storage')
                 return firebase.storage().ref('PathologyImages/'+pictureId+'.jpg').getDownloadURL()
             }).then(url => {
                 link = url
-                console.log('link',link)
+                // console.log('link',link)
             }).then(() => {
                 const payload = {
                     id: pictureId,
@@ -128,6 +135,7 @@ export const store = new Vuex.Store({
         },
         picture(state){
             return state.picture
-        }
+        },
+
     }
 })

@@ -4,21 +4,28 @@
         <h1>Home</h1>
         </v-layout>
         <v-layout row>
-        <!-- <app-container></app-container> -->
-        <app-picture></app-picture>
+            <v-btn @click="openPicture(1000399983051341824)">Picture</v-btn>
+        <!-- <app-picture></app-picture> -->
         </v-layout>
     </v-container>
 </template>
 
 <script>
-// import Container from '@/components/pathology/Container.vue'
-import Picture from '@/components/pathology/Picture.vue'
+// import Picture from '@/components/pathology/Picture.vue'
 
 export default {
     name: 'home',
+    data(){
+        return{
+        }
+    },
     components:{
-        // 'app-container': Container,
-        'app-picture': Picture
+        // 'app-picture': Picture
+    },
+    methods:{
+        openPicture(id){
+            this.$router.push('/picture/' + id)
+        }
     }
     
 }

@@ -1,6 +1,12 @@
 <template>
   <nav>
-    <v-navigation-drawer :clipped="$vuetify.breakpoint.mdAndUp" fixed app v-model="drawer" class="teal lighten-5">
+    <v-navigation-drawer
+      :clipped="$vuetify.breakpoint.mdAndUp"
+      fixed
+      app
+      v-model="drawer"
+      class="teal lighten-5"
+    >
       <v-list>
         <v-list-tile>
           <v-list-tile-action>
@@ -9,7 +15,7 @@
           <v-list-tile-content>{{ user }}</v-list-tile-content>
         </v-list-tile>
       </v-list>
-      <v-list >
+      <v-list>
         <v-list-tile v-for="item in items" :key="item.title" router :to="item.link">
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
@@ -28,18 +34,18 @@
         <router-link to="/" tag="span" style="cursor: pointer">{{ title }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <input placeholder="Search" type="text">
-      <v-btn icon>
-        <v-icon>search</v-icon>
-      </v-btn>
-      <!-- <Signin></Signin> -->
-      <!-- <Signup></Signup> -->
-      <v-btn flat to='/signin'>Sign In</v-btn>
-      <v-btn flat to='/signup'>Sign Up</v-btn>
-      <v-btn flat>
-        <span>Sign Out</span>
-        <v-icon right>exit_to_app</v-icon>
-      </v-btn>
+      <v-text-field
+        flat
+        append-icon="search"
+        label="Search"
+        solo-inverted
+        class="hidden-sm-and-down"
+      ></v-text-field>
+      <div class="hidden-sm-and-down" v-for="item in toolbarItems" :key="item.title">
+        <v-btn v-if="item.icon" flat :to="item.link"><span>{{ item.title }}</span><v-icon right>{{ item.icon }}</v-icon></v-btn>
+        <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
+      </div>
+      <v-btn flat icon class="hidden-md-and-up"><v-icon>more_vert</v-icon></v-btn>
     </v-toolbar>
   </nav>
 </template>
@@ -51,7 +57,7 @@
 
 export default {
   props: {},
-  components:{
+  components: {
     // Signup,
     // Signin
   },
@@ -64,6 +70,11 @@ export default {
         { title: "Home", icon: "home", link: "/" },
         { title: "Contact", icon: "label", link: "/contact" },
         { title: "About", icon: "question_answer", link: "/about" }
+      ],
+      toolbarItems: [
+        {title: 'Sign In', link: '/signin', icon: 'lock_open'},
+        {title: 'Sign Up', link: '/signup', icon: 'face'},
+        {title: 'Sign Out', icon: 'exit_to_app'}
       ]
     };
   }

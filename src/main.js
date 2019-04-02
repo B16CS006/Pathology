@@ -5,6 +5,7 @@ import router from './router'
 import { store } from './store'
 import './firebase'
 
+
 Vue.config.productionTip = false
 
 export const bus = new Vue();

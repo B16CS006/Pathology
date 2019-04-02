@@ -6,6 +6,7 @@ import Contact from '@/components/Contact.vue'
 import Profile from '@/components/user/Profile.vue'
 import Signin from '@/components/user/Signin.vue'
 import Signup from '@/components/user/Signup.vue'
+import Picture from '@/components/pathology/Picture.vue'
 
 Vue.use(Router)
 
@@ -18,14 +19,16 @@ export default new Router({
       component: Home
     },
     {
+      path: '/picture/:id',
+      name: 'Picture',
+      component: Picture
+    },
+    {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: About
 
-      // component: () => import(/* webpackChunkName: "about" */ './components/About.vue')
+      // component: () => import('./components/About.vue')
     },
     {
       path: '/profile',

@@ -8,12 +8,10 @@
     </div> -->
     <v-container fluid>
       <v-layout row wrap justify-center>
-        <div class="right">
           <v-tooltip right>
-            <v-chip class="title teal lighten-3 text-capitalize" slot="activator">{{ pictureID }}</v-chip>
-            <span>Twiter ID</span>
+            <v-chip class="headline font-weight-light teal lighten-3 text-capitalize pa-1 " slot="activator">{{ pictureID }}</v-chip>
+            <span class="font-italic">Name/Id => Twitter</span>
           </v-tooltip>
-        </div>
       </v-layout>
       <v-layout row wrap justify-center>
         <v-flex xs12 md6><info block v-bind:pictureId="pictureID"></info></v-flex>

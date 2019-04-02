@@ -1,13 +1,8 @@
 <template>
   <v-container fluid mt-4>
-    <v-layout>
-      <p>asdf {{ user }} asdf</p>
-    </v-layout>
     <v-layout justify-space-around>
       <v-card>
-        <v-flex>
-          <img :src="pictureLink" :alt="pictureLink" height="350" width="350">
-        </v-flex>
+        <img :src="pictureLink" :alt="pictureId" height="350" width="350">
       </v-card>
     </v-layout>
     <v-layout mt-5 justify-center>
@@ -19,18 +14,6 @@
       </v-card>
     </v-layout>
   </v-container>
-  <!-- <v-container mt-4 fluid>
-    <v-layout>
-      <p>asdf {{ user }} asdf</p>
-    </v-layout>
-    <v-layout justify-space-around>
-      <v-card>
-        <v-flex>
-          <img :src="pictureLink" :alt="pictureLink">
-        </v-flex>
-      </v-card>
-    </v-layout>
-  </v-container> -->
 </template>
 
 <script>
@@ -39,19 +22,22 @@
 
 export default {
   props: ["pictureId"],
-  components: {
-  },
+  components: {},
   methods: {},
   computed: {
     user() {
       return this.$store.getters.currentUser;
     },
-    twitterDescription(){
-      return this.$store.getters.picture? this.$store.getters.picture.description: null
+    twitterDescription() {
+      return this.$store.getters.picture
+        ? this.$store.getters.picture.description
+        : null;
     },
-    pictureLink(){
-      return this.$store.getters.picture? this.$store.getters.picture.link: null
+    pictureLink() {
+      return this.$store.getters.picture
+        ? this.$store.getters.picture.link
+        : null;
     }
-  },
+  }
 };
 </script>
