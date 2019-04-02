@@ -1,6 +1,12 @@
 <template>
-  <v-dialog max-width="500">
-    <v-btn flat slot="activator">Sign Up</v-btn>
+<v-container>
+  <!-- <v-dialog max-width="500"> -->
+    <!-- <v-btn flat slot="activator">Sign Up</v-btn> -->
+    <v-layout row v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <app-alert @dismissed="onDismissed" :text='error.message'></app-alert>
+      </v-flex>
+    </v-layout>
     <v-card>
       <v-card-title class="teal white--text">
         <h2>Sign Up</h2>
@@ -48,14 +54,19 @@
             </v-flex>
           </v-layout>
           <v-layout row justify-space-between>
-              <v-btn flat color="warning" type="validate">Cancel</v-btn>
-              <v-btn flat color="success" type="submit">Sign Up</v-btn>
+              <v-btn flat color="warning" type="reset">Reset</v-btn>
+              <v-btn flat color="success" type="submit" :disabled="loading" :loading="loading">
+                Sign Up
+                <span class="custom-loader" slot="loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+              </v-btn>
           </v-layout>
         </v-form>
       </v-card-text>
     </v-card>
-  </v-dialog>
-
+  <!-- </v-dialog> -->
+  </v-container>
   <!-- <v-container>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
@@ -130,19 +141,78 @@ export default {
     };
   },
   computed: {
+    currentUser(){
+      return this.$store.getters.currentUser
+    },
+    error(){
+      return this.$store.getters.error
+    },
+    loading(){
+      return this.$store.getters.loading
+    }
+  },
+  watch:{
+    currentUser(value){
+      if(value !== null && value !== undefined){
+        this.$router.push('/')
+      }
+    }
   },
   methods: {
     onSignup() {
       if (this.$refs.form.validate()) {
-        console.log({
+        const payload = {
           email: this.signupemail,
-          password: this.signuppassword,
-          confirmPassword: this.confirmPassword
-        });
+          password: this.signuppassword
+        }
+        this.$store.dispatch('signUp',payload)
+        console.log(payload);
       }
+    },
+    onDismissed(){
+      console.log('dismissed')
+      this.$store.dispatch('clearError')
     }
   },
   mixins:[Mixins]
 };
 </script>
 
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

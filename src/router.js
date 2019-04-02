@@ -4,6 +4,8 @@ import Home from '@/components/Home.vue'
 import About from '@/components/About.vue'
 import Contact from '@/components/Contact.vue'
 import Profile from '@/components/user/Profile.vue'
+import Signin from '@/components/user/Signin.vue'
+import Signup from '@/components/user/Signup.vue'
 
 Vue.use(Router)
 
@@ -34,6 +36,16 @@ export default new Router({
       path: '/contact',
       name: 'contact',
       component: Contact
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: Signin
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
     }
   ]
 })

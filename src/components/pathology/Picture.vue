@@ -16,7 +16,7 @@
         </div>
       </v-layout>
       <v-layout row wrap justify-center>
-        <v-flex xs12 md6><info block/></v-flex>
+        <v-flex xs12 md6><info block v-bind:pictureId="pictureID"></info></v-flex>
         <v-flex xs12 md6><review/></v-flex>
       </v-layout>
     </v-container>
@@ -29,8 +29,13 @@ import PictureInfo from './Picture/Info.vue'
 export default {
   data(){
     return{
-      pictureID:'12345'
+      pictureID:'1000399983051341824'
     }
+  },
+  computed:{
+  },
+  created(){
+    this.$store.dispatch('getPicture',this.pictureID)
   },
   components:{
     'review':PictureReview,
