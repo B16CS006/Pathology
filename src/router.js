@@ -19,8 +19,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/picture/:id',
+      path: '/picture/:pictureId',
       name: 'Picture',
+      props: true,
       component: Picture
     },
     {

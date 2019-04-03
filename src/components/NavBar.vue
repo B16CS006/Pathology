@@ -36,6 +36,9 @@
       <v-spacer></v-spacer>
       <v-text-field
         flat
+        clearable
+        v-on:keyup.enter="submit"
+        v-model="search"
         append-icon="search"
         label="Search"
         solo-inverted
@@ -65,6 +68,7 @@ export default {
     return {
       title: "Pathology",
       drawer: false,
+      search: null,
       user: "username",
       items: [
         { title: "Home", icon: "home", link: "/" },
@@ -77,6 +81,14 @@ export default {
         {title: 'Sign Out', icon: 'exit_to_app'}
       ]
     };
+  },
+  methods:{
+    submit(){
+      if(this.search !== null){
+        this.$router.push('/picture/'+this.search)
+        this.search = null
+      }
+    }
   }
 };
 </script>

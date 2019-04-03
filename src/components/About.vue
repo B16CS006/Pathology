@@ -1,6 +1,5 @@
 <template>
   <v-layout>
-      <v-img :src="`https://picsum.photos/500/300?image=${0 * 5 + 10}`" alt="pictureLink" height="350" width="350"></v-img>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-container grid-list-sm fluid>

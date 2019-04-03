@@ -85,7 +85,17 @@ export const store = new Vuex.Store({
         clearError({commit}){
             commit('clearError')
         },
+        updatePicture({commit, state}, pictureId){
+            if(state.picture !=null && state.picture.id == pictureId){
+                return
+            }
+            commit('setPicture',pictureId)
+        },
         getPicture({commit, state}, pictureId){
+            if(state.picture.toLowerCase() === 'random'){
+                pictureId = state.pictures[Math.floor(Math.random()*state.pictures.length)];
+                
+            }
 
             if(state.picture !=null && state.picture.id == pictureId){
                 return
@@ -141,6 +151,9 @@ export const store = new Vuex.Store({
         },
         updatedPictures(state){
             return state.updatedPictures
+        },
+        featuredPictures(state,getters){
+            return getters.pictures.slice(0,50)
         }
 
     }

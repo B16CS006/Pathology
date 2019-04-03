@@ -5,13 +5,13 @@
         </v-layout>
         <v-layout row>
             <v-btn @click="openPicture(1000399983051341824)">Picture</v-btn>
-        <!-- <app-picture></app-picture> -->
         </v-layout>
+        <Pictures></Pictures>
     </v-container>
 </template>
 
 <script>
-// import Picture from '@/components/pathology/Picture.vue'
+import Pictures from '@/components/pathology/Pictures.vue'
 
 export default {
     name: 'home',
@@ -19,9 +19,7 @@ export default {
         return{
         }
     },
-    components:{
-        // 'app-picture': Picture
-    },
+    components:{Pictures},
     methods:{
         openPicture(id){
             this.$router.push('/picture/' + id)

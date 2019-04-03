@@ -21,12 +21,16 @@
 // import { db } from "@/firebase.js";
 
 export default {
-  props: ["pictureId"],
   components: {},
   methods: {},
   computed: {
     user() {
       return this.$store.getters.currentUser;
+    },
+    pictureId(){
+            return this.$store.getters.picture
+        ? this.$store.getters.picture.id
+        : null;
     },
     twitterDescription() {
       return this.$store.getters.picture
