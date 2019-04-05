@@ -17,6 +17,7 @@
           <v-layout row>
             <v-flex xs12>
               <v-text-field
+                autofocus
                 name="signupemail"
                 label="E-mail"
                 id="signupemail"

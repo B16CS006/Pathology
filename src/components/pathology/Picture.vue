@@ -13,7 +13,7 @@
       <v-flex xs12 md6>
         <info block></info>
       </v-flex>
-      <v-flex xs12 md6>
+      <v-flex xs12 md6  v-if="userIsAuthenticated">
         <review/>
       </v-flex>
     </v-layout>
@@ -27,6 +27,9 @@ import PictureInfo from "./Picture/Info.vue";
 export default {
   props: ["pictureId"],
   computed: {
+        userIsAuthenticated(){
+      return this.$store.getters.currentUser
+    },
     id() {
       return this.$store.getters.picture
         ? this.$store.getters.picture.id

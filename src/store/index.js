@@ -82,6 +82,21 @@ export const store = new Vuex.Store({
                 }
             )
         },
+        autoSignIn({commit}, user){
+            const currentUser = {
+                id: user.uid,
+                role: user.role,
+                email: user.email,
+                name: user.email
+            }
+            console.log('auto sign in : ',currentUser)
+            commit('setUser',currentUser)
+        },
+        signOut({commit}){
+            console.log('sign out')
+            firebase.auth().signOut()
+            commit('setUser',null)
+        },
         clearError({commit}){
             commit('clearError')
         },
@@ -92,7 +107,7 @@ export const store = new Vuex.Store({
             commit('setPicture',pictureId)
         },
         getPicture({commit, state}, pictureId){
-            if(state.picture.toLowerCase() === 'random'){
+            if(typeof state.picture === 'string' && state.picture.toLowerCase() === 'random'){
                 pictureId = state.pictures[Math.floor(Math.random()*state.pictures.length)];
                 
             }

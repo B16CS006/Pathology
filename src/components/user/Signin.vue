@@ -17,6 +17,8 @@
           <v-layout row>
             <v-flex xs12>
               <v-text-field
+                required
+                autofocus
                 name="signinemail"
                 label="E-mail"
                 id="signinemail"
@@ -30,6 +32,7 @@
           <v-layout row>
             <v-flex xs12>
               <v-text-field
+                required
                 name="signinpassword"
                 label="Passowrd"
                 id="signinpassword"

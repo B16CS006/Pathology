@@ -7,6 +7,7 @@ import Profile from '@/components/user/Profile.vue'
 import Signin from '@/components/user/Signin.vue'
 import Signup from '@/components/user/Signup.vue'
 import Picture from '@/components/pathology/Picture.vue'
+import AuthGuard from './authGuard'
 
 Vue.use(Router)
 
@@ -34,7 +35,8 @@ export default new Router({
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: AuthGuard
     },
     {
       path: '/contact',

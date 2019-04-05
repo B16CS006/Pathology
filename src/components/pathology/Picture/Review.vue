@@ -1,30 +1,73 @@
 <template>
   <v-container>
-    <v-layout row>
-      <v-flex xs12 sm12 offset-sm1>
-        <form @submit.prevent="onSignup">
-          <v-container>
+    <v-card color="grey lighten-4 mt-3" flat>
+      <v-toolbar flat color="grey lighten-3">
+        <v-toolbar-title>
+          <span class="title font-weight-light">Details</span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn v-if="readonly" color="black" icon flat @click="readonly = false"><v-icon>edit</v-icon></v-btn>
+        <v-btn v-if="!readonly" color="orange" icon flat @click="onClear"><v-icon>clear</v-icon></v-btn>
+        <v-btn v-if="!readonly" color="green" icon flat @click="onDone"><v-icon>done</v-icon></v-btn>
+      </v-toolbar>
+      <v-card-text>
+        <v-flex offset-sm1>
+          <form @submit.prevent="onSubmit">
             <v-flex xs12>
-              <v-text-field name="tissue" label="Tissue" id="tissue" v-model="tissue" type="text"></v-text-field>
+              <v-textarea
+                auto-grow
+                rows="1"
+                :readonly="readonly"
+                name="tissue"
+                label="Tissue"
+                id="tissue"
+                v-model="myDetails.tissue"
+                type="text"
+              ></v-textarea>
             </v-flex>
             <v-flex xs12>
-              <v-text-field name="cause" label="Cause" id="cause" v-model="cause" type="text"></v-text-field>
+              <v-textarea
+                auto-grow
+                rows="1"
+                :readonly="readonly"
+                name="cause"
+                label="Cause"
+                id="cause"
+                v-model="myDetails.cause"
+                type="text"
+              ></v-textarea>
             </v-flex>
             <v-flex xs12>
-              <v-text-field name="special" label="Special" id="special" v-model="special" type="text"></v-text-field>
+              <v-textarea
+                auto-grow
+                rows="1"
+                :readonly="readonly"
+                name="special"
+                label="Special"
+                id="special"
+                v-model="myDetails.special"
+                type="text"
+              ></v-textarea>
             </v-flex>
             <v-flex xs12>
-              <v-text-field name="comment" label="Comment" id="comment" v-model="comment" type="text"></v-text-field>
+              <v-textarea
+                auto-grow
+                rows="1"
+                :readonly="readonly"
+                name="comment"
+                label="Comment"
+                id="comment"
+                v-model="myDetails.comment"
+                type="text"
+              ></v-textarea>
             </v-flex>
-            <v-checkbox label="Is Useful" id="useful" v-model="useful"/>
-          <v-layout row justify-center>
-            <v-btn mx-2 color="teal lighten-3" depressed>Reset</v-btn>
-            <v-btn mx-2 color="teal lighten-3" depressed>Save</v-btn>
-          </v-layout>
-          </v-container>
-        </form>
-      </v-flex>
-    </v-layout>
+            <v-flex xs12>
+            <v-checkbox :readonly="readonly" label="Is Useful" id="useful" v-model="myDetails.useful"/>
+            </v-flex>
+          </form>
+        </v-flex>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -33,12 +76,24 @@
 export default {
   data() {
     return {
-      tissue: null,
-      cause: null,
-      special: null,
-      comment: null,
-      useful: false
+      myDetails: {},
+      readonly: true,
+      icon: "edit"
     };
+  },
+  computed:{
+    details(){
+      return this.$store.getters.pictureDetails
+    }
+  },
+  watch:{
+    details(){
+      myDetails = "find"
+    }
+  },
+  methods: {
+    onClear(){},
+    onDone(){}
   }
 };
 </script>

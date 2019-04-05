@@ -37,7 +37,7 @@
       <v-text-field
         flat
         clearable
-        v-on:keyup.enter="submit"
+        v-on:keyup.enter="onSubmit"
         v-model="search"
         append-icon="search"
         label="Search"
@@ -45,10 +45,20 @@
         class="hidden-sm-and-down"
       ></v-text-field>
       <div class="hidden-sm-and-down" v-for="item in toolbarItems" :key="item.title">
-        <v-btn v-if="item.icon" flat :to="item.link"><span>{{ item.title }}</span><v-icon right>{{ item.icon }}</v-icon></v-btn>
+        <v-btn v-if="item.icon" flat :to="item.link">
+          <span>{{ item.title }}</span>
+          <v-icon right>{{ item.icon }}</v-icon>
+        </v-btn>
         <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
+        <v-btn
+         flat
+         v-if="userIsAuthenticated"
+         @click="onSignOut"
+        >Logout<v-icon right dark>exit_to_app</v-icon></v-btn>
       </div>
-      <v-btn flat icon class="hidden-md-and-up"><v-icon>more_vert</v-icon></v-btn>
+      <v-btn flat icon class="hidden-md-and-up">
+        <v-icon>more_vert</v-icon>
+      </v-btn>
     </v-toolbar>
   </nav>
 </template>
@@ -69,25 +79,44 @@ export default {
       title: "Pathology",
       drawer: false,
       search: null,
-      user: "username",
-      items: [
+      user: "username"
+    };
+  },
+  computed: {
+    userIsAuthenticated(){
+      return this.$store.getters.currentUser !== null && this.$store.getters.currentUser !== undefined
+    },
+    items() {
+      let items = [
         { title: "Home", icon: "home", link: "/" },
         { title: "Contact", icon: "label", link: "/contact" },
         { title: "About", icon: "question_answer", link: "/about" }
-      ],
-      toolbarItems: [
-        {title: 'Sign In', link: '/signin', icon: 'lock_open'},
-        {title: 'Sign Up', link: '/signup', icon: 'face'},
-        {title: 'Sign Out', icon: 'exit_to_app'}
-      ]
-    };
-  },
-  methods:{
-    submit(){
-      if(this.search !== null){
-        this.$router.push('/picture/'+this.search)
-        this.search = null
+      ];
+      return items;
+    },
+    toolbarItems() {
+      let items = [
+        { title: "Sign In", link: "/signin", icon: "lock_open" },
+        { title: "Sign Up", link: "/signup", icon: "face" }
+      ];
+      if (this.userIsAuthenticated) {
+        items = [
+          { title: "Profile", link: "/profile", icon: "person" },
+          // { title: "Sign Out", icon: "exit_to_app" }
+        ];
       }
+      return items;
+    }
+  },
+  methods: {
+    onSubmit() {
+      if (this.search !== null) {
+        this.$router.push("/picture/" + this.search);
+        this.search = null;
+      }
+    },
+    onSignOut(){
+      this.$store.dispatch("signOut")
     }
   }
 };
