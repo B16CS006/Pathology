@@ -6,94 +6,59 @@
           <span class="title font-weight-light">Details</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn v-if="readonly" color="black" icon flat @click="readonly = false"><v-icon>edit</v-icon></v-btn>
+        <edit-review-dialog :details="myDetails"></edit-review-dialog>
+        <!-- <v-btn v-if="readonly" color="black" icon flat @click="readonly = false"><v-icon>edit</v-icon></v-btn>
         <v-btn v-if="!readonly" color="orange" icon flat @click="onClear"><v-icon>clear</v-icon></v-btn>
-        <v-btn v-if="!readonly" color="green" icon flat @click="onDone"><v-icon>done</v-icon></v-btn>
+        <v-btn v-if="!readonly" color="green" icon flat @click="onDone"><v-icon>done</v-icon></v-btn> -->
       </v-toolbar>
-      <v-card-text>
-        <v-flex offset-sm1>
-          <form @submit.prevent="onSubmit">
-            <v-flex xs12>
-              <v-textarea
-                auto-grow
-                rows="1"
-                :readonly="readonly"
-                name="tissue"
-                label="Tissue"
-                id="tissue"
-                v-model="myDetails.tissue"
-                type="text"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs12>
-              <v-textarea
-                auto-grow
-                rows="1"
-                :readonly="readonly"
-                name="cause"
-                label="Cause"
-                id="cause"
-                v-model="myDetails.cause"
-                type="text"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs12>
-              <v-textarea
-                auto-grow
-                rows="1"
-                :readonly="readonly"
-                name="special"
-                label="Special"
-                id="special"
-                v-model="myDetails.special"
-                type="text"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs12>
-              <v-textarea
-                auto-grow
-                rows="1"
-                :readonly="readonly"
-                name="comment"
-                label="Comment"
-                id="comment"
-                v-model="myDetails.comment"
-                type="text"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs12>
-            <v-checkbox :readonly="readonly" label="Is Useful" id="useful" v-model="myDetails.useful"/>
-            </v-flex>
-          </form>
-        </v-flex>
-      </v-card-text>
+      <v-list two-line class="grey lighten-4 ml-5">
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Tissue</v-list-tile-title>
+              <v-list-tile-sub-title>{{myDetails.tissue}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Cause</v-list-tile-title>
+              <v-list-tile-sub-title>{{myDetails.cause}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Special</v-list-tile-title>
+              <v-list-tile-sub-title>{{myDetails.special}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Comment</v-list-tile-title>
+              <v-list-tile-sub-title>{{myDetails.comment}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
     </v-card>
   </v-container>
 </template>
 
 
 <script>
+import EditReviewDialog from './EditReviewDialog.vue'
+
 export default {
-  data() {
-    return {
-      myDetails: {},
-      readonly: true,
-      icon: "edit"
-    };
+  components:{
+    EditReviewDialog
   },
   computed:{
+    currentUser(){
+      return this.$store.getters.currentUser
+    },
     details(){
-      return this.$store.getters.pictureDetails
+      return this.$store.getters.picture.details
+    },
+    myDetails(){
+      return this.$store.getters.picture.details? this.$store.getters.picture.details[this.currentUser.uid] ? this.$store.getters.picture.details[this.currentUser.uid] : {} : {}
     }
-  },
-  watch:{
-    details(){
-      myDetails = "find"
-    }
-  },
-  methods: {
-    onClear(){},
-    onDone(){}
   }
 };
 </script>

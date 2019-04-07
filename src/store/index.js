@@ -14,7 +14,8 @@ export const store = new Vuex.Store({
         user: null,
         picture: null,
         loading: null,
-        error: null
+        error: null,
+        databaseError: null
     },
     mutations: {
         setUser(state, payload) {
@@ -29,13 +30,19 @@ export const store = new Vuex.Store({
         clearError(state){
             state.error = null
         },
+        setDatabaseError(state, payload){
+            state.databaseError = payload
+        },
         setPicture(state, payload){
             state.picture = payload
+        },
+        updatePictureDetails(state, payload){
+            state.picture.details[state.user.uid] = payload
         }
     },
     actions: {
         signUp({ commit }, payload) {
-            console.log('signing up')
+            // console.log('signing up')
             commit('setLoading', true)
             commit('clearError')
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -43,7 +50,7 @@ export const store = new Vuex.Store({
                     user => {
                         commit('setLoading',false)
                         const newUser = {
-                            id: user.uid,
+                            uid: user.uid,
                             role: 'user',
                             email: payload.email,
                             name: payload.email
@@ -55,19 +62,19 @@ export const store = new Vuex.Store({
                     error => {
                         commit('setLoading',false)
                         commit('setError',error)
-                        console.log(error)
+                        // console.log(error)
                     }
                 )
         },
         signIn({commit}, payload){
-            console.log('Signing In')
+            // console.log('Signing In')
             commit('setLoading',true)
             commit('clearError')
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password).then(
                 user =>{
                     commit('setLoading', false)
                     const newUser = {
-                        id :  user.uid,
+                        uid :  user.uid,
                         role: 'user',
                         email : payload.email,
                         name: payload.email 
@@ -78,22 +85,22 @@ export const store = new Vuex.Store({
                 error => {
                     commit('setLoading', false)
                     commit('setError',error)
-                    console.log(error)
+                    // console.log(error)
                 }
             )
         },
         autoSignIn({commit}, user){
             const currentUser = {
-                id: user.uid,
+                uid: user.uid,
                 role: user.role,
                 email: user.email,
                 name: user.email
             }
-            console.log('auto sign in : ',currentUser)
+            // console.log('auto sign in : ',currentUser)
             commit('setUser',currentUser)
         },
         signOut({commit}){
-            console.log('sign out')
+            // console.log('sign out')
             firebase.auth().signOut()
             commit('setUser',null)
         },
@@ -101,50 +108,53 @@ export const store = new Vuex.Store({
             commit('clearError')
         },
         updatePicture({commit, state}, pictureId){
-            if(state.picture !=null && state.picture.id == pictureId){
-                return
-            }
+            if(state.picture !== null && state.picture.id === pictureId) return
             commit('setPicture',pictureId)
+        },
+        updatePictureDetails({commit, state}, pictureDetails){
+            commit('setLoading',true)
+            firebase.database().ref('PictureDetails/'+state.picture.id + '/' + state.user.uid).set(pictureDetails)
+            .then(() => {
+                commit('setLoading',false)
+                commit('updatePictureDetails',pictureDetails)
+            }).catch((error) => {
+                commit('setLoading', false)
+                commit('setDatabaseError', error)
+            })
+            
         },
         getPicture({commit, state}, pictureId){
             if(typeof state.picture === 'string' && state.picture.toLowerCase() === 'random'){
                 pictureId = state.pictures[Math.floor(Math.random()*state.pictures.length)];
-                
             }
-
-            if(state.picture !=null && state.picture.id == pictureId){
-                return
-            }
-
-            let description = null
-            let link = null
-
-            firebase.database().ref('UserText/' + pictureId).once('value')
-            .then((data) => {
-                description = data.val()
-                // console.log('descprition',description)
-            }).then(() => {
-                // console.log('storage')
+            if(state.picture !== null && state.picture.id === pictureId) return
+            commit('setLoading',true)
+            let description = null, link = null, details = null
+            firebase.database().ref('UserText/' + pictureId).once('value').then((data) => { 
+                description = data.val() 
+            }).then(() => { 
                 return firebase.storage().ref('PathologyImages/'+pictureId+'.jpg').getDownloadURL()
             }).then(url => {
                 link = url
-                // console.log('link',link)
-            }).then(() => {
-                const payload = {
-                    id: pictureId,
-                    description: description,
-                    link: link
+                return firebase.database().ref('PictureDetails/' + pictureId).once('value')
+            }).then((detailsData) => {
+                if(detailsData.val() !== null){
+                    details = detailsData.val()
+                    // console.log("getPictureDetails: ", details)
                 }
-                console.log('commit',payload)
+            }).then(() => {
+                commit('setLoading',false)
+                const payload = { id: pictureId, description: description, link: link, details: details }
+                // console.log('commit',payload)
                 commit('setPicture',payload)
             }).catch((error) => {
-                const payload = {
-                    id: pictureId,
-                    description: description,
-                    link: link
+                commit('setLoading',false)
+                if( description !== null || link !== null || details !== null ){
+                    commit('setPicture',{ id: pictureId, description: description, link: link, details: details })
+                }else{
+                    commit('setDatabaseError',error)
+                    commit('setPicture',null)
                 }
-                console.log('error',error)
-                commit('setPicture',payload)
             })
         }
     },
@@ -157,6 +167,9 @@ export const store = new Vuex.Store({
         },
         error(state){
             return state.error
+        },
+        databaseError(state){
+            return state.databaseError
         },
         picture(state){
             return state.picture

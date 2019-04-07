@@ -12,7 +12,8 @@
           <v-list-tile-action>
             <v-icon>tag_faces</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>{{ user }}</v-list-tile-content>
+          <v-list-tile-content v-if="currentUser">{{ currentUser.name }}</v-list-tile-content>
+          <v-list-tile-content v-else>Newbie</v-list-tile-content>
         </v-list-tile>
       </v-list>
       <v-list>
@@ -78,11 +79,13 @@ export default {
     return {
       title: "Pathology",
       drawer: false,
-      search: null,
-      user: "username"
+      search: null
     };
   },
   computed: {
+    currentUser(){
+      return this.$store.getters.currentUser ? this.$store.getters.currentUser : null
+    },
     userIsAuthenticated(){
       return this.$store.getters.currentUser !== null && this.$store.getters.currentUser !== undefined
     },

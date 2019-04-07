@@ -1,22 +1,33 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap justify-center>
-      <v-tooltip right>
-        <v-chip
-          class="headline font-weight-light teal lighten-3 text-capitalize pa-1"
-          slot="activator"
-        >{{ id }}</v-chip>
-        <span class="font-italic">Name/Id => Twitter</span>
-      </v-tooltip>
-    </v-layout>
-    <v-layout row wrap justify-center>
-      <v-flex xs12 md6>
-        <info block></info>
-      </v-flex>
-      <v-flex xs12 md6  v-if="userIsAuthenticated">
-        <review/>
-      </v-flex>
-    </v-layout>
+    <template v-if="picture">
+      <v-layout row wrap v-if="loading">
+        <v-flex xs12 class="text-xs-center">
+          <v-progress-circular indeterminate :width="7" :size="70"></v-progress-circular>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap v-else-if="error">{{error}}</v-layout>
+      <template v-else>
+        <v-layout row wrap justify-center>
+          <v-tooltip right>
+            <v-chip
+              class="headline font-weight-light teal lighten-3 text-capitalize pa-1"
+              slot="activator"
+            >{{ picture.id }}</v-chip>
+            <span class="font-italic">Name/Id => Twitter</span>
+          </v-tooltip>
+        </v-layout>
+        <v-layout row wrap justify-center>
+          <v-flex xs12 md6>
+            <info block></info>
+          </v-flex>
+          <v-flex xs12 md6 v-if="userIsAuthenticated">
+            <review/>
+          </v-flex>
+        </v-layout>
+      </template>
+    </template>
+    <v-layout row wrap v-else>Error : {{databaseError.message}}</v-layout>
   </v-container>
 </template>
 
@@ -27,13 +38,20 @@ import PictureInfo from "./Picture/Info.vue";
 export default {
   props: ["pictureId"],
   computed: {
-        userIsAuthenticated(){
-      return this.$store.getters.currentUser
+    userIsAuthenticated() {
+      return this.$store.getters.currentUser;
     },
-    id() {
-      return this.$store.getters.picture
-        ? this.$store.getters.picture.id
-        : null;
+    picture() {
+      return this.$store.getters.picture;
+    },
+    loading() {
+      return this.$store.getters.loading;
+    },
+    error() {
+      return this.$store.getters.error;
+    },
+    databaseError() {
+      return this.$store.getters.databaseError;
     }
   },
   methods: {
