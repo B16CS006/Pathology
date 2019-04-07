@@ -57,6 +57,7 @@
           <v-flex xs12>
             <v-card-actions>
               <v-btn color="orange" flat @click="editDialog = false">Close</v-btn>
+              <v-btn color="purple" flat @click="syncDetails">Reset</v-btn>
               <v-btn color="green" flat @click="onSaveChanges">Save</v-btn>
             </v-card-actions>
           </v-flex>
@@ -68,28 +69,39 @@
 
 <script>
 export default {
-  props: ['details'],
   data(){
     return{
       editDialog:false,
-      tissue: this.details.tissue,
-      cause: this.details.cause,
-      special: this.details.special,
-      comment: this.details.comment,
-      useful: this.details.useful,
+      tissue: null,
+      cause: null,
+      special: null,
+      comment: null,
+      useful: null,
     }
   },
   methods:{
     onSaveChanges(){
-      
       this.$store.dispatch('updatePictureDetails',{
-        tissue: this.tissue? this.tissue: '',
-        cause: this.cause? this.cause: '',
-        special: this.special? this.special: '',
-        comment: this.comment? this.comment: '',
+        tissue: this.tissue? this.tissue.trim(): '',
+        cause: this.cause? this.cause.trim(): '',
+        special: this.special? this.special.trim(): '',
+        comment: this.comment? this.comment.trim(): '',
         useful: this.useful? this.useful: false})
       this.editDialog = false
+    },
+    syncDetails(){
+      const uid = this.$store.getters.currentUser.uid
+      console.log('uid: ',uid)
+      const temp = this.$store.getters.picture.details? this.$store.getters.picture.details[uid] ? this.$store.getters.picture.details[uid] : {} : {}
+      this.tissue = temp.tissue 
+      this.cause = temp.cause 
+      this.special = temp.special 
+      this.comment = temp.comment 
+      this.useful = temp.useful    
     }
+  },
+  created(){
+    this.syncDetails()  
   }
 }
 </script>

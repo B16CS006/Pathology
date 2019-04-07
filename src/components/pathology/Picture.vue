@@ -6,7 +6,6 @@
           <v-progress-circular indeterminate :width="7" :size="70"></v-progress-circular>
         </v-flex>
       </v-layout>
-      <v-layout row wrap v-else-if="error">{{error}}</v-layout>
       <template v-else>
         <v-layout row wrap justify-center>
           <v-tooltip right>
@@ -46,9 +45,6 @@ export default {
     },
     loading() {
       return this.$store.getters.loading;
-    },
-    error() {
-      return this.$store.getters.error;
     },
     databaseError() {
       return this.$store.getters.databaseError;

@@ -6,10 +6,7 @@
           <span class="title font-weight-light">Details</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <edit-review-dialog :details="myDetails"></edit-review-dialog>
-        <!-- <v-btn v-if="readonly" color="black" icon flat @click="readonly = false"><v-icon>edit</v-icon></v-btn>
-        <v-btn v-if="!readonly" color="orange" icon flat @click="onClear"><v-icon>clear</v-icon></v-btn>
-        <v-btn v-if="!readonly" color="green" icon flat @click="onDone"><v-icon>done</v-icon></v-btn> -->
+        <edit-review-dialog></edit-review-dialog>
       </v-toolbar>
       <v-list two-line class="grey lighten-4 ml-5">
           <v-list-tile>
