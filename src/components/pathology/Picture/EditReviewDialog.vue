@@ -91,7 +91,6 @@ export default {
     },
     syncDetails(){
       const uid = this.$store.getters.currentUser.uid
-      console.log('uid: ',uid)
       const temp = this.$store.getters.picture.details? this.$store.getters.picture.details[uid] ? this.$store.getters.picture.details[uid] : {} : {}
       this.tissue = temp.tissue 
       this.cause = temp.cause 

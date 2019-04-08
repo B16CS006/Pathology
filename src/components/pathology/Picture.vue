@@ -24,6 +24,11 @@
             <review/>
           </v-flex>
         </v-layout>
+        <v-layout row wrap justify-center>
+          <v-flex xs12>
+            <AllReviews/>
+          </v-flex>
+        </v-layout>
       </template>
     </template>
     <v-layout row wrap v-else>Error : {{databaseError.message}}</v-layout>
@@ -33,6 +38,7 @@
 <script>
 import PictureReview from "./Picture/Review.vue";
 import PictureInfo from "./Picture/Info.vue";
+import AllReviews from './Picture/AllReviews.vue';
 
 export default {
   props: ["pictureId"],
@@ -66,7 +72,8 @@ export default {
   },
   components: {
     review: PictureReview,
-    info: PictureInfo
+    info: PictureInfo,
+    AllReviews
   }
 };
 </script>

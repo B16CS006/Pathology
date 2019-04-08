@@ -51,15 +51,29 @@
           <v-icon right>{{ item.icon }}</v-icon>
         </v-btn>
         <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
-        <v-btn
-         flat
-         v-if="userIsAuthenticated"
-         @click="onSignOut"
-        >Logout<v-icon right dark>exit_to_app</v-icon></v-btn>
+        <v-btn flat v-if="userIsAuthenticated" @click="onSignOut">
+          Logout
+          <v-icon right dark>exit_to_app</v-icon>
+        </v-btn>
       </div>
-      <v-btn flat icon class="hidden-md-and-up">
-        <v-icon>more_vert</v-icon>
-      </v-btn>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn flat icon v-on="on" class="hidden-md-and-up">
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+        </template>
+        <v-list v-for="item in toolbarItems" :key="item.title">
+            <v-btn v-if="item.icon" flat :to="item.link">
+              <span>{{ item.title }}</span>
+              <v-icon right>{{ item.icon }}</v-icon>
+            </v-btn>
+            <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
+            <v-btn flat v-if="userIsAuthenticated" @click="onSignOut">
+              Logout
+              <v-icon right dark>exit_to_app</v-icon>
+            </v-btn>
+        </v-list>
+      </v-menu>
     </v-toolbar>
   </nav>
 </template>
@@ -83,11 +97,16 @@ export default {
     };
   },
   computed: {
-    currentUser(){
-      return this.$store.getters.currentUser ? this.$store.getters.currentUser : null
+    currentUser() {
+      return this.$store.getters.currentUser
+        ? this.$store.getters.currentUser
+        : null;
     },
-    userIsAuthenticated(){
-      return this.$store.getters.currentUser !== null && this.$store.getters.currentUser !== undefined
+    userIsAuthenticated() {
+      return (
+        this.$store.getters.currentUser !== null &&
+        this.$store.getters.currentUser !== undefined
+      );
     },
     items() {
       let items = [
@@ -104,7 +123,7 @@ export default {
       ];
       if (this.userIsAuthenticated) {
         items = [
-          { title: "Profile", link: "/profile", icon: "person" },
+          { title: "Profile", link: "/profile", icon: "person" }
           // { title: "Sign Out", icon: "exit_to_app" }
         ];
       }
@@ -118,8 +137,8 @@ export default {
         this.search = null;
       }
     },
-    onSignOut(){
-      this.$store.dispatch("signOut")
+    onSignOut() {
+      this.$store.dispatch("signOut");
     }
   }
 };

@@ -17,9 +17,6 @@
 </template>
 
 <script>
-// import PictureLink from "./Link.vue";
-// import { db } from "@/firebase.js";
-
 export default {
   components: {},
   methods: {},

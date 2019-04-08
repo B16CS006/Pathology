@@ -8,7 +8,7 @@
         <v-spacer></v-spacer>
         <edit-review-dialog></edit-review-dialog>
       </v-toolbar>
-      <v-list two-line class="grey lighten-4 ml-5">
+      <v-list two-line class="grey lighten-4 ml-2">
           <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title>Tissue</v-list-tile-title>
