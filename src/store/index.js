@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
         picture: null,
         loading: null,
         error: null,
-        databaseError: null
+        databaseError: null,
+        contacts: null
     },
     mutations: {
         setUser(state, payload) {
@@ -38,6 +39,9 @@ export const store = new Vuex.Store({
         },
         updatePictureDetails(state, payload){
             state.picture.details[state.user.uid] = payload
+        },
+        setContacts(state,payload){
+            state.contacts = payload
         }
     },
     actions: {
@@ -156,6 +160,16 @@ export const store = new Vuex.Store({
                     commit('setPicture',null)
                 }
             })
+        },
+        getContacts({commit, state}){
+            if(state.contacts !== null) return
+            firebase.database().ref('Contacts').once('value').then((data) => {
+                console.log('contacts : ',data.val())
+                for( const datas in data.val()){
+                    console.log(datas)
+                }
+                commit('setContacts',data.val())
+            })
         }
     },
     getters: {
@@ -182,6 +196,9 @@ export const store = new Vuex.Store({
         },
         featuredPictures(state,getters){
             return getters.pictures.slice(0,50)
+        },
+        contacts(state){
+            return state.contacts
         }
 
     }
