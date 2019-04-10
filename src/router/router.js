@@ -8,6 +8,7 @@ import Signin from '@/components/user/Signin.vue'
 import Signup from '@/components/user/Signup.vue'
 import Picture from '@/components/pathology/Picture.vue'
 import AuthGuard from './authGuard'
+import Helper from '@/Helper/helper.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/signup',
       name: 'signup',
       component: Signup
+    },
+    {
+      path: '/helper',
+      name: 'helper',
+      component: Helper
     }
   ]
 })

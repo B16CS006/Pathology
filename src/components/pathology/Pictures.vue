@@ -1,18 +1,15 @@
 <template>
   <v-container fluid>
+    <!-- {{ pictures }}
+    {{ updatedPictures }}
+    {{ featuredPictures }} -->
     <v-layout justify-center>
       <v-flex xs12 sm12 md10>
         <v-card flat>
           <v-container grid-list-xs fluid>
             <v-layout row wrap>
-              <v-flex v-for="picture in pictures" :key="picture" xs6 sm4 md3 d-flex>
+              <v-flex v-for="(picture) in pictures" :key="picture" xs12 sm6 md4 d-flex>
                 <v-card flat tile class="d-flex" :to="'/picture/' + picture">
-                  <!-- <v-img
-                    :src="picture.link"
-                    aspect-ratio="1"
-                    class="grey lighten-2"
-                  >
-                  </v-img> -->
                   <v-btn>{{ picture }}</v-btn>
                 </v-card>
               </v-flex>
@@ -29,9 +26,18 @@ export default {
   computed: {
       pictures(){
           return this.$store.getters.featuredPictures
+      },
+      updatedPictures(){
+        return this.$store.getters.updatedPictures
+      },
+      featuredPictures(){
+        return this.$store.getters.featuredPictures
       }
   },
   methods:{
+  },
+  created(){
+    this.$store.dispatch('getPictures')
   }
 };
 </script>

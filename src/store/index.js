@@ -9,8 +9,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        pictures:["1000399983051341824","1000780891931672576","1001004050991562752","1001285106525507591"],
-        updatedPictures: ["1000780891931672576"],
+        pictures: null,
+        updatedPictures: null,
         user: null,
         picture: null,
         loading: null,
@@ -36,6 +36,12 @@ export const store = new Vuex.Store({
         },
         setPicture(state, payload){
             state.picture = payload
+        },
+        setPictures(state,payload){
+            state.pictures = payload
+        },
+        setUpdatedPictures(state, payload){
+            state.updatedPictures = payload
         },
         updatePictureDetails(state, payload){
             state.picture.details[state.user.uid] = payload
@@ -161,13 +167,19 @@ export const store = new Vuex.Store({
                 }
             })
         },
+        getPictures({commit}){
+            firebase.database().ref('Pictures').once('value').then((data) => {
+                commit('setPictures',Object.keys(data.val()))
+            })
+        },
+        getUpdatedPictures({commit}, uid){
+            firebase.database().ref('UpdatedPictures').child(uid).once('value').then((data) => {
+                commit('setUpdatedPictures', Object.keys(data.val()))
+            })
+        },
         getContacts({commit, state}){
             if(state.contacts !== null) return
             firebase.database().ref('Contacts').once('value').then((data) => {
-                console.log('contacts : ',data.val())
-                for( const datas in data.val()){
-                    console.log(datas)
-                }
                 commit('setContacts',data.val())
             })
         }
@@ -194,8 +206,10 @@ export const store = new Vuex.Store({
         updatedPictures(state){
             return state.updatedPictures
         },
-        featuredPictures(state,getters){
-            return getters.pictures.slice(0,50)
+        featuredPictures(state){
+
+            // pictures = state.pictures.filter(( state.updatedPictures ) => !toRemove.includes( state.updatedPictures));
+            return state.pictures
         },
         contacts(state){
             return state.contacts
