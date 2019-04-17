@@ -1,6 +1,8 @@
 <template>
   <v-dialog width="600px" v-model="editDialog">
-    <v-btn fab flat slot="activator"><v-icon>edit</v-icon></v-btn>
+    <v-btn fab flat slot="activator">
+      <v-icon>edit</v-icon>
+    </v-btn>
     <v-card>
       <v-container>
         <v-layout row wrap>
@@ -68,39 +70,56 @@
 </template>
 
 <script>
+import { database } from "firebase";
+
 export default {
-  data(){
-    return{
-      editDialog:false,
+  props: ["pictureId", "details"],
+  data() {
+    return {
+      editDialog: false,
       tissue: null,
       cause: null,
       special: null,
       comment: null,
-      useful: null,
-    }
+      useful: null
+    };
   },
-  methods:{
-    onSaveChanges(){
-      this.$store.dispatch('updatePictureDetails',{
-        tissue: this.tissue? this.tissue.trim(): '',
-        cause: this.cause? this.cause.trim(): '',
-        special: this.special? this.special.trim(): '',
-        comment: this.comment? this.comment.trim(): '',
-        useful: this.useful? this.useful: false})
-      this.editDialog = false
+  methods: {
+    onSaveChanges() {
+      const pictureDetails = {
+        tissue: this.tissue ? this.tissue.trim() : "",
+        cause: this.cause ? this.cause.trim() : "",
+        special: this.special ? this.special.trim() : "",
+        comment: this.comment ? this.comment.trim() : "",
+        useful: this.useful ? this.useful : false
+      };
+
+      database()
+        .ref(
+          "PictureDetails/" +
+            this.pictureId +
+            "/" +
+            this.$store.getters.currentUser.uid
+        )
+        .set(pictureDetails)
+        .then(() => {
+          this.$emit('syncDetails',true)
+          this.editDialog = false
+        })
+        .catch(error => {
+          console.log('Error While Uploading the image:',error)
+        });
     },
-    syncDetails(){
-      const uid = this.$store.getters.currentUser.uid
-      const temp = this.$store.getters.picture.details? this.$store.getters.picture.details[uid] ? this.$store.getters.picture.details[uid] : {} : {}
-      this.tissue = temp.tissue 
-      this.cause = temp.cause 
-      this.special = temp.special 
-      this.comment = temp.comment 
-      this.useful = temp.useful    
+    syncDetails() {
+      this.tissue = this.details.tissue;
+      this.cause = this.details.cause;
+      this.special = this.details.special;
+      this.comment = this.details.comment;
+      this.useful = this.details.useful;
     }
   },
-  created(){
-    this.syncDetails()  
+  created() {
+    this.syncDetails();
   }
-}
+};
 </script>

@@ -17,7 +17,7 @@ export default {
   },
   computed:{
       pictures(){
-          return this.$store.getters.featuredPictures
+          return this.$store.getters.pictures
       }
   },
   components: { Pictures },

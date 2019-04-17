@@ -1,73 +1,84 @@
 <template>
   <v-container fluid>
-    <template v-if="picture">
-      <v-layout row wrap v-if="loading">
-        <v-flex xs12 class="text-xs-center">
-          <v-progress-circular indeterminate :width="7" :size="70"></v-progress-circular>
-        </v-flex>
-      </v-layout>
-      <template v-else>
+    <v-layout row wrap v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular indeterminate :width="7" :size="70"></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <template v-else>
+      <template v-if="picture">
         <v-layout row wrap justify-center>
           <v-tooltip right>
             <v-chip
               class="headline font-weight-light teal lighten-3 text-capitalize pa-1"
               slot="activator"
-            >{{ picture.id }}</v-chip>
-            <span class="font-italic">Name/Id => Twitter</span>
+            >{{ picture[2] }}</v-chip>
+            <span class="font-italic">Twitter Id : {{ picture[0] }}</span>
           </v-tooltip>
         </v-layout>
         <v-layout row wrap justify-center>
           <v-flex xs12 md6>
-            <info block></info>
+            <info block v-bind:picture="picture"></info>
           </v-flex>
           <v-flex xs12 md6 v-if="userIsAuthenticated">
-            <review/>
+            <review v-bind:details="pictureDetails" v-bind:pictureId="picture[0]" v-on:syncDetails="getDetails"/>
           </v-flex>
         </v-layout>
         <v-layout row wrap justify-center>
           <v-flex xs12>
-            <AllReviews/>
+            <AllReviews v-bind:details="pictureDetails"/>
           </v-flex>
         </v-layout>
       </template>
+      <p v-else>{{pictureId}} : No such Image found</p>
     </template>
-    <v-layout row wrap v-else>Error : {{databaseError.message}}</v-layout>
   </v-container>
 </template>
 
 <script>
 import PictureReview from "./Picture/Review.vue";
 import PictureInfo from "./Picture/Info.vue";
-import AllReviews from './Picture/AllReviews.vue';
+import AllReviews from "./Picture/AllReviews.vue";
+import { database } from "firebase";
 
 export default {
   props: ["pictureId"],
+  data() {
+    return {
+      pictureDetails: "loading"
+    };
+  },
   computed: {
     userIsAuthenticated() {
       return this.$store.getters.currentUser;
     },
     picture() {
-      return this.$store.getters.picture;
+      return this.$store.getters.picture(this.pictureId);
     },
     loading() {
       return this.$store.getters.loading;
     },
-    databaseError() {
-      return this.$store.getters.databaseError;
-    }
   },
   methods: {
-    updatePictureId() {
-      this.$store.dispatch("updatePicture", this.pictureId);
-      this.$store.dispatch("getPicture", this.pictureId);
+    getDetails() {
+      database()
+        .ref("PictureDetails/" + this.pictureId)
+        .once("value")
+        .then(data => {
+          this.pictureDetails = data.val();
+        })
+        .catch(error => {
+          this.pictureDetails = null;
+          console.log("picture while downloading details: ", error);
+        });
     }
   },
-  created() {
-    this.updatePictureId();
+  beforeMount(){
+    this.getDetails()
   },
-  watch: {
-    pictureId() {
-      this.updatePictureId();
+  watch:{
+    picture(){
+      this.getDetails()
     }
   },
   components: {

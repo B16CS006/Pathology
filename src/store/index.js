@@ -12,41 +12,31 @@ export const store = new Vuex.Store({
         pictures: null,
         updatedPictures: null,
         user: null,
-        picture: null,
+        // picture: null,
         loading: null,
         error: null,
-        databaseError: null,
         contacts: null
     },
     mutations: {
         setUser(state, payload) {
             state.user = payload
         },
-        setLoading(state, payload){
+        setLoading(state, payload) {
             state.loading = payload
         },
-        setError(state, payload){
+        setError(state, payload) {
             state.error = payload
         },
-        clearError(state){
+        clearError(state) {
             state.error = null
         },
-        setDatabaseError(state, payload){
-            state.databaseError = payload
-        },
-        setPicture(state, payload){
-            state.picture = payload
-        },
-        setPictures(state,payload){
+        setPictures(state, payload) {
             state.pictures = payload
         },
-        setUpdatedPictures(state, payload){
+        setUpdatedPictures(state, payload) {
             state.updatedPictures = payload
         },
-        updatePictureDetails(state, payload){
-            state.picture.details[state.user.uid] = payload
-        },
-        setContacts(state,payload){
+        setContacts(state, payload) {
             state.contacts = payload
         }
     },
@@ -58,7 +48,7 @@ export const store = new Vuex.Store({
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
                 .then(
                     user => {
-                        commit('setLoading',false)
+                        commit('setLoading', false)
                         const newUser = {
                             uid: user.uid,
                             role: 'user',
@@ -70,36 +60,36 @@ export const store = new Vuex.Store({
                 )
                 .catch(
                     error => {
-                        commit('setLoading',false)
-                        commit('setError',error)
+                        commit('setLoading', false)
+                        commit('setError', error)
                         // console.log(error)
                     }
                 )
         },
-        signIn({commit}, payload){
+        signIn({ commit }, payload) {
             // console.log('Signing In')
-            commit('setLoading',true)
+            commit('setLoading', true)
             commit('clearError')
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password).then(
-                user =>{
+                user => {
                     commit('setLoading', false)
                     const newUser = {
-                        uid :  user.uid,
+                        uid: user.uid,
                         role: 'user',
-                        email : payload.email,
-                        name: payload.email 
+                        email: payload.email,
+                        name: payload.email
                     }
-                    commit('setUser',newUser)
+                    commit('setUser', newUser)
                 }
             ).catch(
                 error => {
                     commit('setLoading', false)
-                    commit('setError',error)
+                    commit('setError', error)
                     // console.log(error)
                 }
             )
         },
-        autoSignIn({commit}, user){
+        autoSignIn({ commit }, user) {
             const currentUser = {
                 uid: user.uid,
                 role: user.role,
@@ -107,111 +97,134 @@ export const store = new Vuex.Store({
                 name: user.email
             }
             // console.log('auto sign in : ',currentUser)
-            commit('setUser',currentUser)
+            commit('setUser', currentUser)
         },
-        signOut({commit}){
+        signOut({ commit }) {
             // console.log('sign out')
             firebase.auth().signOut()
-            commit('setUser',null)
+            commit('setUser', null)
         },
-        clearError({commit}){
+        clearError({ commit }) {
             commit('clearError')
         },
-        updatePicture({commit, state}, pictureId){
-            if(state.picture !== null && state.picture.id === pictureId) return
-            commit('setPicture',pictureId)
-        },
-        updatePictureDetails({commit, state}, pictureDetails){
-            commit('setLoading',true)
-            firebase.database().ref('PictureDetails/'+state.picture.id + '/' + state.user.uid).set(pictureDetails)
-            .then(() => {
-                commit('setLoading',false)
-                commit('updatePictureDetails',pictureDetails)
-            }).catch((error) => {
-                commit('setLoading', false)
-                commit('setDatabaseError', error)
-            })
-            
-        },
-        getPicture({commit, state}, pictureId){
-            if(typeof state.picture === 'string' && state.picture.toLowerCase() === 'random'){
-                pictureId = state.pictures[Math.floor(Math.random()*state.pictures.length)];
-            }
-            if(state.picture !== null && state.picture.id === pictureId) return
-            commit('setLoading',true)
-            let description = null, link = null, details = null
-            firebase.database().ref('UserText/' + pictureId).once('value').then((data) => { 
-                description = data.val() 
-            }).then(() => { 
-                return firebase.storage().ref('PathologyImages/'+pictureId+'.jpg').getDownloadURL()
-            }).then(url => {
-                link = url
-                return firebase.database().ref('PictureDetails/' + pictureId).once('value')
-            }).then((detailsData) => {
-                if(detailsData.val() !== null){
-                    details = detailsData.val()
-                    // console.log("getPictureDetails: ", details)
-                }
-            }).then(() => {
-                commit('setLoading',false)
-                const payload = { id: pictureId, description: description, link: link, details: details }
-                // console.log('commit',payload)
-                commit('setPicture',payload)
-            }).catch((error) => {
-                commit('setLoading',false)
-                if( description !== null || link !== null || details !== null ){
-                    commit('setPicture',{ id: pictureId, description: description, link: link, details: details })
-                }else{
-                    commit('setDatabaseError',error)
-                    commit('setPicture',null)
-                }
-            })
-        },
-        getPictures({commit}){
+        // updatePicture({commit, state}, pictureId){
+        //     if(state.picture !== null && state.picture.id === pictureId) return
+        //     commit('setPicture',pictureId)
+        // },
+        // updatePictureDetails({commit, state}, pictureDetails){
+        //     commit('setLoading',true)
+        //     firebase.database().ref('PictureDetails/'+state.picture.id + '/' + state.user.uid).set(pictureDetails)
+        //     .then(() => {
+        //         commit('setLoading',false)
+        //         commit('updatePictureDetails',pictureDetails)
+        //     }).catch((error) => {
+        //         commit('setLoading', false)
+        //     })
+
+        // },
+        // getPicture({commit, state}, pictureId){
+        //     if(typeof state.picture === 'string' && state.picture.toLowerCase() === 'random'){
+        //         pictureId = state.pictures[Math.floor(Math.random()*state.pictures.length)];
+        //     }
+        //     if(state.picture !== null && state.picture.id === pictureId) return
+        //     commit('setLoading',true)
+        //     let description = null, link = null, details = null
+        //     firebase.database().ref('UserText/' + pictureId).once('value').then((data) => { 
+        //         description = data.val() 
+        //     }).then(() => { 
+        //         return firebase.storage().ref('PathologyImages/'+pictureId+'.jpg').getDownloadURL()
+        //     }).then(url => {
+        //         link = url
+        //         return firebase.database().ref('PictureDetails/' + pictureId).once('value')
+        //     }).then((detailsData) => {
+        //         if(detailsData.val() !== null){
+        //             details = detailsData.val()
+        //             // console.log("getPictureDetails: ", details)
+        //         }
+        //     }).then(() => {
+        //         commit('setLoading',false)
+        //         const payload = { id: pictureId, description: description, link: link, details: details }
+        //         // console.log('commit',payload)
+        //         commit('setPicture',payload)
+        //     }).catch((error) => {
+        //         commit('setLoading',false)
+        //         if( description !== null || link !== null || details !== null ){
+        //             commit('setPicture',{ id: pictureId, description: description, link: link, details: details })
+        //         }else{
+        //             commit('setPicture',null)
+        //         }
+        //     })
+        // },
+        getPictures({ commit, state }) {
+            commit('setLoading', true)
             firebase.database().ref('Pictures').once('value').then((data) => {
-                commit('setPictures',Object.keys(data.val()))
+                console.log('successfully get pictures from firebase database')
+                commit('setPictures', Object.entries(data.val()))
+                commit('setLoading', false)
+            }).catch(error => {
+                commit('setLoading', false)
             })
+
         },
-        getUpdatedPictures({commit}, uid){
+        getUpdatedPictures({ commit }, uid) {
             firebase.database().ref('UpdatedPictures').child(uid).once('value').then((data) => {
                 commit('setUpdatedPictures', Object.keys(data.val()))
             })
+
         },
-        getContacts({commit, state}){
-            if(state.contacts !== null) return
+        getContacts({ commit }) {
+            if (state.contacts !== null) return
             firebase.database().ref('Contacts').once('value').then((data) => {
-                commit('setContacts',data.val())
+                commit('setContacts', data.val())
             })
+
         }
     },
     getters: {
         currentUser(state) {
             return state.user
         },
-        loading(state){
+        loading(state) {
             return state.loading
         },
-        error(state){
+        error(state) {
             return state.error
         },
-        databaseError(state){
-            return state.databaseError
+        picture(state) {
+            return pictureId => {
+                if (pictureId === undefined || pictureId === null || state.pictures === undefined || state.pictures === null) {
+                    return null
+                }else if(pictureId < state.pictures.length){
+                    let temp = state.pictures[pictureId]
+                    temp[2] = pictureId
+                    return temp
+                }else{
+                    let index = -1
+                let temp = state.pictures.find((picture) => {
+                    index += 1
+                    return picture[0] === pictureId
+                })
+
+                if (temp === undefined)
+                    temp = null
+                else
+                    temp[2] = index
+                return temp
+                }
+            }
         },
-        picture(state){
-            return state.picture
-        },
-        pictures(state){
+        pictures(state) {
             return state.pictures
         },
-        updatedPictures(state){
+        updatedPictures(state) {
             return state.updatedPictures
         },
-        featuredPictures(state){
+        // featuredPictures(state){
 
-            // pictures = state.pictures.filter(( state.updatedPictures ) => !toRemove.includes( state.updatedPictures));
-            return state.pictures
-        },
-        contacts(state){
+        //     // pictures = state.pictures.filter(( state.updatedPictures ) => !toRemove.includes( state.updatedPictures));
+        //     return state.pictures
+        // },
+        contacts(state) {
             return state.contacts
         }
 

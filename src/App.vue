@@ -10,14 +10,15 @@
 
 <script>
 import NavBar from '@/components/NavBar'
-// import Body from './components/Body'
 // import AppFooter from './components/AppFooter';
 
 export default {
   components:{
     NavBar,
-    // 'app-body': Body,
     // 'app-footer': AppFooter
+  },
+  created(){
+    this.$store.dispatch('getPictures')
   }
 }
 </script>

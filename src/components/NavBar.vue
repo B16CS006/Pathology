@@ -132,10 +132,22 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.search !== null) {
-        this.$router.push("/picture/" + this.search);
-        this.search = null;
+      const maxLength = this.$store.getters.pictures.length
+      if(this.search === null){
+        return
+      }else if(this.search.toLowerCase() === 'random'){
+        this.search = Math.floor(Math.random()* maxLength)
       }
+
+      if(parseInt(this.search) < maxLength){
+        let id = parseInt(this.search)
+        if(id<0)
+          id = 0
+        this.$router.push('/picture/' + this.$store.getters.pictures[id][0])
+      }else{
+        this.$router.push("/picture/" + this.search);
+      }
+      this.search = null;
     },
     onSignOut() {
       this.$store.dispatch("signOut");

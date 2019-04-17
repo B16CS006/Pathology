@@ -2,6 +2,7 @@
   <v-container fluid>
     <v-btn @click="uploadUserText">Upload User Text</v-btn>
     <v-btn @click="downloadText">Download Text</v-btn>
+    <v-btn @click="uploadData">Upload Data</v-btn>
     count : {{ dataCount }}
   </v-container>
 </template>
@@ -31,10 +32,23 @@ export default {
         .ref("UserText")
         .once("value")
         .then(data => {
-          this.data = data.val();
-          console.log("donwload success");
+          this.data = {}
+          for(let element in data.val()){
+            let temp = {description: data.val()[element]}
+            this.data[element] = temp
+          }
+          console.log("donwload success",Object.keys(data.val()).length, Object.keys(this.data).length);
         });
-    }
+    },
+    uploadData() {
+      //upload pathology.json file content on firebase
+      database()
+        .ref("Pictures")
+        .update(this.data)
+        .then(() => {
+          console.log("sucess");
+        });
+    },
   },
   computed: {
     dataCount() {
