@@ -30,26 +30,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      team: [
-        {
-          id: 1,
-          name: "Chetan Prakash Meena",
-          mobileNumber: "+91-7727931260",
-          email: "meena.13@iitj.ac.in",
-          avatar: "../assets/logo.png"
-        },
-        {
-          id: 2,
-          name: "Ashutosh Yadav",
-          mobileNumber: "+91-7727931260",
-          email: "yadav.5@iitj.ac.in",
-          avatar: "../assets/logo.png"
-        }
-      ]
-    };
-  },
   computed:{
     contacts(){
       return this.$store.getters.contacts

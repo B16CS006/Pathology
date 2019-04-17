@@ -50,12 +50,14 @@ export const store = new Vuex.Store({
                     user => {
                         commit('setLoading', false)
                         const newUser = {
-                            uid: user.uid,
+                            uid: user.user.uid,
                             role: 'user',
                             email: payload.email,
-                            name: payload.email
+                            name: payload.name
                         }
                         commit('setUser', newUser)
+                        // console.log(newUser)
+                        firebase.database().ref('Users/'+user.user.uid).set(newUser)
                     }
                 )
                 .catch(
@@ -73,13 +75,18 @@ export const store = new Vuex.Store({
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password).then(
                 user => {
                     commit('setLoading', false)
-                    const newUser = {
-                        uid: user.uid,
-                        role: 'user',
-                        email: payload.email,
-                        name: payload.email
-                    }
-                    commit('setUser', newUser)
+                    firebase.database().ref('Users/'+ user.user.uid).once('value').then(data => {
+                        // console.log('setUser',data.val())
+                        commit('setUser', data.val())
+                    }).catch(error =>{
+                        console.log(error)
+                        commit('setUser',{
+                            uid: user.user.uid,
+                            email: payload.email,
+                            name: payload.email,
+                            role: 'unknown'
+                        })
+                    })
                 }
             ).catch(
                 error => {
@@ -92,12 +99,23 @@ export const store = new Vuex.Store({
         autoSignIn({ commit }, user) {
             const currentUser = {
                 uid: user.uid,
-                role: user.role,
                 email: user.email,
-                name: user.email
+                name: user.email,
+                role: 'unknown'
             }
-            // console.log('auto sign in : ',currentUser)
             commit('setUser', currentUser)
+            firebase.database().ref('Users/'+ user.uid).once('value').then(data => {
+                // console.log('setUser',data.val())
+                commit('setUser', data.val())
+            }).catch(error =>{
+                console.log(error)
+                commit('setUser',{
+                    uid: user.uid,
+                    email: payload.email,
+                    name: payload.email,
+                    role: 'unknown'
+                })
+            })
         },
         signOut({ commit }) {
             // console.log('sign out')

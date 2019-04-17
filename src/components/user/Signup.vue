@@ -31,6 +31,18 @@
           <v-layout row>
             <v-flex xs12>
               <v-text-field
+                name="name"
+                label="Name"
+                id="name"
+                v-model="name"
+                type="Name"
+                prepend-icon="account_circle"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs12>
+              <v-text-field
                 name="signuppassword"
                 label="Passowrd"
                 id="signuppassword"
@@ -137,6 +149,7 @@ export default {
   data() {
     return {
       signupemail: "",
+      name: "",
       signuppassword: "",
       confirmPassword: ""
     };
@@ -164,10 +177,10 @@ export default {
       if (this.$refs.form.validate()) {
         const payload = {
           email: this.signupemail,
-          password: this.signuppassword
+          password: this.signuppassword,
+          name: this.name
         }
         this.$store.dispatch('signUp',payload)
-        console.log(payload);
       }
     },
     onDismissed(){

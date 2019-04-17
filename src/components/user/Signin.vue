@@ -87,7 +87,6 @@ export default {
           password: this.signinpassword,
         }
         this.$store.dispatch('signIn',payload)
-        console.log(payload)
       }
     },
     onDismissed(){

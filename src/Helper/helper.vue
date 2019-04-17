@@ -1,9 +1,12 @@
 <template>
   <v-container fluid>
+    <template v-if="currentUser !== null && isValidUser">
     <v-btn @click="uploadUserText">Upload User Text</v-btn>
     <v-btn @click="downloadText">Download Text</v-btn>
     <v-btn @click="uploadData">Upload Data</v-btn>
     count : {{ dataCount }}
+    </template>
+    <p v-else>You are not permitted to view this page.</p>
   </v-container>
 </template>
 
@@ -14,10 +17,18 @@ import userText from "@/assets/pathology.json";
 export default {
   data() {
     return {
-      data: null
+      data: null,
+      validUsers: []
     };
   },
   methods: {
+    getValidUsers(){
+      database().ref('Helper/ValidUsers').once('value').then(data => {
+        if(data.val() !== null){
+          this.validUsers = data.val().split(',')
+        }
+      })
+    },
     uploadUserText() {
       //upload pathology.json file content on firebase
       database()
@@ -42,6 +53,9 @@ export default {
     },
     uploadData() {
       //upload pathology.json file content on firebase
+      if(this.data === null){
+        return
+      }
       database()
         .ref("Pictures")
         .update(this.data)
@@ -49,13 +63,25 @@ export default {
           console.log("sucess");
         });
     },
+    uploadImages(){
+      // upload all images which are in userText
+    }
   },
   computed: {
     dataCount() {
       if (this.data === null || this.data === undefined)
         return 0
       return Object.keys(this.data).length
+    },
+    currentUser(){
+      return this.$store.getters.currentUser
+    },
+    isValidUser(){
+      return this.validUsers.includes(this.currentUser.uid)
     }
+  },
+  created(){
+    this.getValidUsers()
   }
 };
 </script>
