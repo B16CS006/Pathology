@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
-    <!-- {{ pictures.length }}
-    {{ updatedPictures.length }}
-    {{ featuredPictures.length }}-->
+    {{ pictures.length }}
+    <!-- {{ updatedPictures.length }}
+    {{ featuredPictures.length }} -->
     <v-layout justify-center>
       <v-flex xs12 sm12 md10>
         <v-pagination
@@ -18,10 +18,16 @@
       <v-flex xs12 sm12 md10>
         <v-card flat color="grey lighten-4">
           <v-container grid-list-xs fluid>
-            <v-layout row wrap>
-              <v-flex v-for="(picture) in featuredPictures" :key="picture[0]" xs12 sm6 md4 d-flex>
+            <v-layout row wrap justify-space-around>
+              <v-flex v-for="(picture) in featuredPictures" :key="picture[0]" xs12 sm6 md3 xl2 d-flex >
                 <v-card flat tile class="d-flex" :to="'/picture/' + picture[0]" color="grey lighten-4">
-                  <v-btn>{{ picture[0] }}</v-btn>
+                 <v-img
+                  v-if="picture[1].link"
+                  :src="picture[1].link"
+                  aspect-ratio="1"
+                  class="grey lighten-2"
+                  ></v-img>
+                  <v-btn v-else>{{ picture[0] }}</v-btn>
                 </v-card>
               </v-flex>
             </v-layout>

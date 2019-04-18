@@ -1,12 +1,12 @@
 import { initializeApp } from 'firebase';
 
 const app = initializeApp({
-    apiKey: "AIzaSyBPeTmCUnABBqF5lKkrCKZ8LMdChPyNY-Q",
-    authDomain: "patholgoybtp.firebaseapp.com",
-    databaseURL: "https://patholgoybtp.firebaseio.com",
-    projectId: "patholgoybtp",
-    storageBucket: "patholgoybtp.appspot.com",
-    messagingSenderId: "608003098590"
+    apiKey: "AIzaSyD5rGhdAsskw6FcUClxoMfqeKLkftncuMk",
+    authDomain: "pathology-233213.firebaseapp.com",
+    databaseURL: "https://pathology-233213.firebaseio.com",
+    projectId: "pathology-233213",
+    storageBucket: "",
+    messagingSenderId: "338066448825"
 })
 
 export const db = app.database();

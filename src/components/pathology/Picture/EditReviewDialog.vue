@@ -14,43 +14,20 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card-text>
-              <v-textarea
-                auto-grow
-                rows="1"
-                name="tissue"
-                label="Tissue"
-                id="tissue"
-                v-model="tissue"
-                type="text"
-              ></v-textarea>
-              <v-textarea
-                auto-grow
-                rows="1"
-                name="cause"
-                label="Cause"
-                id="cause"
-                v-model="cause"
-                type="text"
-              ></v-textarea>
-              <v-textarea
-                auto-grow
-                rows="1"
-                name="special"
-                label="Special"
-                id="special"
-                v-model="special"
-                type="text"
-              ></v-textarea>
-              <v-textarea
-                auto-grow
-                rows="1"
-                name="comment"
-                label="Comment"
-                id="comment"
-                v-model="comment"
-                type="text"
-              ></v-textarea>
-              <v-checkbox label="Is Useful" id="useful" v-model="useful"/>
+              
+              <v-textarea auto-grow rows="1" name="patientName" label="Patient Name" id="patientName" v-model="patientName" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="patientAge" label="Patient Age" id="patientAge" v-model="patientAge" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="patientHospital" label="Patient Hospital" id="patientHospital" v-model="patientHospital" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="patientBiopsy" label="Patient Biopsy Number" id="patientBiopsy" v-model="patientBiopsy" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="tissue" label="Tissue" id="tissue" v-model="tissue" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="macroscopicExamination" label="Macroscopic Examination" id="macroscopicExamination" v-model="macroscopicExamination" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="clinicalDiagnosis" label="Clinical Diagnosis" id="clinicalDiagnosis" v-model="clinicalDiagnosis" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="grossFinding" label="Gross Finding" id="grossFinding" v-model="grossFinding" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="report" label="Report" id="report" v-model="report" type="text" ></v-textarea>
+              <v-textarea auto-grow rows="1" name="signature" label="Signature" id="signature" v-model="signature" type="text" ></v-textarea>
+
+              <v-checkbox label="Description is useful" id="useful" v-model="useful"/>
+              <v-checkbox label="Invalid Image" id="invalidImage" v-model="invalidImage"/>
             </v-card-text>
           </v-flex>
         </v-layout>
@@ -77,45 +54,65 @@ export default {
   data() {
     return {
       editDialog: false,
+      patientName: null,
+      patientAge: null,
+      patientHospital: null,
+      patientBiopsy: null,
       tissue: null,
-      cause: null,
-      special: null,
-      comment: null,
-      useful: null
+      macroscopicExamination: null,
+      clinicalDiagnosis: null,
+      grossFinding: null,
+      report: null,
+      signature: null,
+      useful: null,
+      invalidImage: null,
     };
   },
   methods: {
     onSaveChanges() {
       const pictureDetails = {
-        tissue: this.tissue ? this.tissue.trim() : "",
-        cause: this.cause ? this.cause.trim() : "",
-        special: this.special ? this.special.trim() : "",
-        comment: this.comment ? this.comment.trim() : "",
-        useful: this.useful ? this.useful : false
+        patientName: this.patientName ? this.patientName.trim() : '',
+        patientAge: this.patientAge ? this.patientAge.trim() : '',
+        patientHospital: this.patientHospital ? this.patientHospital.trim() : '',
+        patientBiopsy: this.patientBiopsy ? this.patientBiopsy.trim() : '',
+        tissue: this.tissue ? this.tissue.trim() : '',
+        macroscopicExamination: this.macroscopicExamination ? this.macroscopicExamination.trim() : '',
+        clinicalDiagnosis: this.clinicalDiagnosis ? this.clinicalDiagnosis.trim() : '',
+        grossFinding: this.grossFinding ? this.grossFinding.trim() : '',
+        report: this.report ? this.report.trim() : '',
+        signature: this.signature ? this.signature.trim() : '',
+        useful: this.useful ? this.useful : false,
+        invalidImage: this.invalidImage ? this.invalidImage : false,
       };
 
+      const id = this.pictureId
+      const uid = this.$store.getters.currentUser.uid
+
       database()
-        .ref(
-          "PictureDetails/" +
-            this.pictureId +
-            "/" +
-            this.$store.getters.currentUser.uid
-        )
+        .ref( "PictureDetails/" + id + "/" + uid )
         .set(pictureDetails)
         .then(() => {
           this.$emit('syncDetails',true)
           this.editDialog = false
+          database().ref('PictureUpdated/' + uid + '/' + id).set(true); // add picture to the user updated list
         })
         .catch(error => {
           console.log('Error While Uploading the image:',error)
         });
     },
     syncDetails() {
-      this.tissue = this.details.tissue;
-      this.cause = this.details.cause;
-      this.special = this.details.special;
-      this.comment = this.details.comment;
-      this.useful = this.details.useful;
+      this.patientName = this.details.patientName
+      this.patientAge = this.details.patientAge
+      this.patientHospital = this.details.patientHospital
+      this.patientBiopsy = this.details.patientBiopsy
+      this.tissue = this.details.tissue
+      this.macroscopicExamination = this.details.macroscopicExamination
+      this.clinicalDiagnosis = this.details.clinicalDiagnosis
+      this.grossFinding = this.details.grossFinding
+      this.report = this.details.report
+      this.signature = this.details.signature
+      this.useful = this.useful
+      this.invalidImage = this.invalidImage
     }
   },
   created() {

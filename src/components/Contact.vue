@@ -2,7 +2,7 @@
   <div class="Contact pa-3">
     <h1 class="subheading grey--text">Contact</h1>
     <v-container class="my-5">
-      <v-layout row wrap justify-center>
+      <v-layout row wrap justify-center v-if="contacts">
         <v-flex xs12 sm6 md4 lg3 v-for="(contact,id) in contacts" :key="id">
           <v-card class="text-xs-center ma-3">
             <v-responsive class="pt-4">

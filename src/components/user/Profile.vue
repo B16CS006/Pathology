@@ -7,7 +7,7 @@
           <v-card class="text-xs-center ma-3">
             <v-responsive class="pt-4">
               <v-avatar size='150' class="grey lighten-2">
-                <img :src="currentUser.avatar">
+                <img src="http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg">
               </v-avatar>
             </v-responsive>
             <v-card-text>

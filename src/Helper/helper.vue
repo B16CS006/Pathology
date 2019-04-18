@@ -1,12 +1,14 @@
 <template>
   <v-container fluid>
-    <template v-if="currentUser !== null && isValidUser">
+    <!-- <template v-if="currentUser !== null && isValidUser"> -->
     <v-btn @click="uploadUserText">Upload User Text</v-btn>
     <v-btn @click="downloadText">Download Text</v-btn>
     <v-btn @click="uploadData">Upload Data</v-btn>
+    <v-btn @click="uploadImages">Upload Images</v-btn>
+    <v-btn @click="pick" >something</v-btn><input style="display: none" ref="filename" type="file" @change="picked">
     count : {{ dataCount }}
-    </template>
-    <p v-else>You are not permitted to view this page.</p>
+    <!-- </template> -->
+    <!-- <p v-else>You are not permitted to view this page.</p> -->
   </v-container>
 </template>
 
@@ -41,6 +43,7 @@ export default {
     downloadText() {
       database()
         .ref("UserText")
+        .limitToLast(500)
         .once("value")
         .then(data => {
           this.data = {}
@@ -53,18 +56,35 @@ export default {
     },
     uploadData() {
       //upload pathology.json file content on firebase
-      if(this.data === null){
-        return
-      }
-      database()
-        .ref("Pictures")
-        .update(this.data)
-        .then(() => {
-          console.log("sucess");
-        });
+
+      database().ref('AutoUpdate/Picture').update(this.data).then(()=>{console.log('Successful')})
+
+      // if(this.data === null){
+      //   return
+      // }
+      // database()
+      //   .ref("Pictures")
+      //   .update(this.data)
+      //   .then(() => {
+      //     console.log("sucess");
+      //   });
     },
     uploadImages(){
       // upload all images which are in userText
+      // let files = Object.keys(userText)
+      // for(file of files){
+      // }
+    },
+    pick(){
+      this.$refs.filename.click()
+    },
+    picked(event){
+      const files = event.target.files
+      let filename = files[0].name
+
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(files[0])
+      console.log(files)
     }
   },
   computed: {

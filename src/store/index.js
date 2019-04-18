@@ -190,7 +190,7 @@ export const store = new Vuex.Store({
             })
 
         },
-        getContacts({ commit }) {
+        getContacts({ commit, state }) {
             if (state.contacts !== null) return
             firebase.database().ref('Contacts').once('value').then((data) => {
                 commit('setContacts', data.val())

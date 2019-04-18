@@ -2,11 +2,11 @@
 <v-container>
   <!-- <v-dialog max-width="500"> -->
     <!-- <v-btn flat slot="activator">Sign Up</v-btn> -->
-    <v-layout row v-if="error">
+    <!-- <v-layout row v-if="error">
       <v-flex xs12 sm6 offset-sm3>
         <app-alert @dismissed="onDismissed" :text='error.message'></app-alert>
       </v-flex>
-    </v-layout>
+    </v-layout> -->
     <v-card>
       <v-card-title class="teal white--text">
         <h2>Sign Up</h2>
