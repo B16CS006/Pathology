@@ -97,7 +97,7 @@ export default {
           database().ref('PictureUpdated/' + uid + '/' + id).set(true); // add picture to the user updated list
         })
         .catch(error => {
-          console.log('Error While Uploading the image:',error)
+          // console.log('Error While Uploading the image:',error)
         });
     },
     syncDetails() {

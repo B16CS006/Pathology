@@ -69,7 +69,7 @@ export default {
         })
         .catch(error => {
           this.pictureDetails = null;
-          console.log("picture while downloading details: ", error);
+          // console.log("picture while downloading details: ", error);
         });
     }
   },

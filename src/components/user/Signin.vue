@@ -90,7 +90,7 @@ export default {
       }
     },
     onDismissed(){
-      console.log('dismissed')
+      // console.log('dismissed')
     }
   },
   mixins:[Mixins]

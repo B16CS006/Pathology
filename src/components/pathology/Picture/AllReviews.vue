@@ -71,7 +71,7 @@ export default {
           this.users = data.val();
         })
         .catch(error => {
-          console.log(error, "while getting users");
+          // console.log(error, "while getting users");
         });
     }
   },
