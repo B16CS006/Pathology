@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
-    <!-- <template v-if="currentUser !== null && isValidUser"> -->
+    <template v-if="currentUser !== null && isValidUser">
     <v-btn @click="uploadUserText">Upload User Text</v-btn>
     <v-btn @click="downloadText">Download Text</v-btn>
     <v-btn @click="uploadData">Upload Data</v-btn>
     <v-btn @click="uploadImages">Upload Images</v-btn>
     <v-btn @click="pick" >something</v-btn><input style="display: none" ref="filename" type="file" @change="picked">
     count : {{ dataCount }}
-    <!-- </template> -->
-    <!-- <p v-else>You are not permitted to view this page.</p> -->
+    </template>
+    <p v-else>You are not permitted to view this page.</p>
   </v-container>
 </template>
 

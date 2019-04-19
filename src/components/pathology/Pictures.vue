@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    {{ pictures.length }}
+    <!-- {{ pictures.length }} -->
     <!-- {{ updatedPictures.length }}
     {{ featuredPictures.length }} -->
     <v-layout justify-center>
