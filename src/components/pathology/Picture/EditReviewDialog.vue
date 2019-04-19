@@ -1,13 +1,13 @@
 <template>
-  <v-dialog width="600px" v-model="editDialog">
+  <v-dialog width max-width="800px" v-model="editDialog">
     <v-btn fab flat slot="activator">
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
-      <v-container>
+      <v-container class="teal lighten-5">
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title>Edit Details</v-card-title>
+            <v-card-title class="title teal white--text">Edit Details</v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
@@ -111,8 +111,8 @@ export default {
       this.grossFinding = this.details.grossFinding
       this.report = this.details.report
       this.signature = this.details.signature
-      this.useful = this.useful
-      this.invalidImage = this.invalidImage
+      this.useful = this.details.useful
+      this.invalidImage = this.details.invalidImage
     }
   },
   created() {
