@@ -39,7 +39,6 @@
                 v-model="signinpassword"
                 type="password"
                 prepend-icon="vpn_key"
-                :rules="required"
               ></v-text-field>
             </v-flex>
           </v-layout>

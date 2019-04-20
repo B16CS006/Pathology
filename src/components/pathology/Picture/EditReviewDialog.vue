@@ -4,12 +4,8 @@
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
+      <v-card-title class="title teal white--text">Edit Details</v-card-title>
       <v-container class="teal lighten-5">
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-card-title class="title teal white--text">Edit Details</v-card-title>
-          </v-flex>
-        </v-layout>
         <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex xs12>
