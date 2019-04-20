@@ -1,7 +1,7 @@
 <template>
   <nav>
     <v-navigation-drawer
-      :clipped="$vuetify.breakpoint.mdAndUp"
+      clipped
       fixed
       app
       v-model="drawer"
@@ -28,7 +28,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app flat dark color="teal" :clipped-left="$vuetify.breakpoint.mdAndUp">
+    <v-toolbar app flat dark color="teal" clipped-left absolute>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase white--text">
         <!-- <span>{{ title }}</span> -->
@@ -43,7 +43,6 @@
         append-icon="search"
         label="Search"
         solo-inverted
-        class="hidden-sm-and-down"
       ></v-text-field>
       <div class="hidden-sm-and-down" v-for="item in toolbarItems" :key="item.title">
         <v-btn v-if="item.icon" flat :to="item.link">

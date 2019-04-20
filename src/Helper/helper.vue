@@ -10,8 +10,7 @@
         count : {{ dataCount }} ,
         uploadedDescription : {{ uploadedDescription }}
       </v-layout>
-      <v-btn @click="uploadImages">Upload Images</v-btn>
-      <v-btn @click="pick">something</v-btn>
+      <v-btn @click="pick">File Picker</v-btn>
       <input style="display: none" ref="filename" type="file">
     </template>
     <p v-else>You are not permitted to view this page.</p>
@@ -118,12 +117,6 @@ export default {
       //   .then(() => {
       //     console.log("sucess");
       //   });
-    },
-    uploadImages() {
-      // upload all images which are in userText
-      // let files = Object.keys(userText)
-      // for(file of files){
-      // }
     },
     pick() {
       this.$refs.filename.click();
