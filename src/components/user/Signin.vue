@@ -34,11 +34,12 @@
               <v-text-field
                 required
                 name="signinpassword"
-                label="Passowrd"
+                label="Password"
                 id="signinpassword"
                 v-model="signinpassword"
                 type="password"
                 prepend-icon="vpn_key"
+                :rules="required"
               ></v-text-field>
             </v-flex>
           </v-layout>

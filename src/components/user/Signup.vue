@@ -37,7 +37,7 @@
                 v-model="name"
                 type="Name"
                 prepend-icon="account_circle"
-                required
+                :rules="required"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -45,12 +45,12 @@
             <v-flex xs12>
               <v-text-field
                 name="signuppassword"
-                label="Passowrd"
+                label="Password"
                 id="signuppassword"
                 v-model="signuppassword"
                 type="password"
                 prepend-icon="vpn_key"
-                :rules="inputRule"
+                :rules="[lengthRule(signuppassword,6)]"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -104,7 +104,7 @@
                   <v-flex xs12>
                     <v-text-field
                       name="signuppassword"
-                      label="Passowrd"
+                      label="Password"
                       id="signuppassword"
                       v-model="signuppassword"
                       type="password"
