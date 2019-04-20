@@ -78,6 +78,7 @@ export default {
   },
   watch:{
     picture(){
+      console.log('pictureChanged')
       this.getDetails()
     }
   },

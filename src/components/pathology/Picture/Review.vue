@@ -54,6 +54,10 @@
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Report:</div>
             <div class="px-2 pb-2">{{myDetails.report}}</div>
+          </v-flex>   
+          <v-flex xs12>
+            <div class="subheading font-weight-bold px-1" >Signature:</div>
+            <div class="px-2 pb-2">{{myDetails.signature}}</div>
           </v-flex>          
           <v-flex xs12>
             <v-checkbox label="Description is useful" readonly v-model="myDetails.useful"/>

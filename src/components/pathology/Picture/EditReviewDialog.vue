@@ -1,6 +1,6 @@
 <template>
   <v-dialog width max-width="800px" v-model="editDialog">
-    <v-btn fab flat slot="activator">
+    <v-btn fab flat slot="activator" @click="syncDetails">
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
@@ -14,7 +14,6 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card-text>
-              
               <v-textarea auto-grow rows="1" name="patientName" label="Patient Name" id="patientName" v-model="patientName" type="text" ></v-textarea>
               <v-textarea auto-grow rows="1" name="patientAge" label="Patient Age" id="patientAge" v-model="patientAge" type="text" ></v-textarea>
               <v-textarea auto-grow rows="1" name="patientHospital" label="Patient Hospital" id="patientHospital" v-model="patientHospital" type="text" ></v-textarea>
@@ -115,8 +114,14 @@ export default {
       this.invalidImage = this.details.invalidImage
     }
   },
-  created() {
-    this.syncDetails();
-  }
+  // watch:{
+  //   pictureId(){
+  //     this.syncDetails()
+  //   }
+  // },
+  // beforeMount() {
+  //   console.log('Edit Review created', this.invalidImage)
+  //   this.syncDetails();
+  // }
 };
 </script>
