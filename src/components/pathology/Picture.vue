@@ -61,6 +61,7 @@ export default {
   },
   methods: {
     getDetails() {
+      // console.log('pictureChanged')
       database()
         .ref("PictureDetails/" + this.pictureId)
         .once("value")
@@ -78,7 +79,6 @@ export default {
   },
   watch:{
     picture(){
-      console.log('pictureChanged')
       this.getDetails()
     }
   },

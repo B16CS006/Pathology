@@ -1,21 +1,20 @@
 <template>
   <v-container fluid>
-    <!-- <template v-if="currentUser !== null && isValidUser"> -->
-    <v-btn @click="uploadUserText">Upload User Text</v-btn>
-    <v-layout column>
-      
-      <v-btn @click="downloadAllText">Download All Text</v-btn>
-      <v-btn @click="downloadText">Download Text</v-btn>
-      <v-btn @click="uploadData">Upload Data</v-btn>
-      <v-btn @click="resetCount">Reset Count</v-btn>
-      count : {{ dataCount }} ,
-      uploadedDescription : {{ uploadedDescription }}
-    </v-layout>
-    <v-btn @click="uploadImages">Upload Images</v-btn>
-    <v-btn @click="pick">something</v-btn>
-    <input style="display: none" ref="filename" type="file">
-    <!-- </template> -->
-    <!-- <p v-else>You are not permitted to view this page.</p> -->
+    <template v-if="currentUser !== null && isValidUser">
+      <v-btn @click="uploadUserText">Upload User Text</v-btn>
+      <v-layout column>
+        <v-btn @click="downloadAllText">Download All Text</v-btn>
+        <v-btn @click="downloadText">Download Text</v-btn>
+        <v-btn @click="uploadData">Upload Data</v-btn>
+        <v-btn @click="resetCount">Reset Count</v-btn>
+        count : {{ dataCount }} ,
+        uploadedDescription : {{ uploadedDescription }}
+      </v-layout>
+      <v-btn @click="uploadImages">Upload Images</v-btn>
+      <v-btn @click="pick">something</v-btn>
+      <input style="display: none" ref="filename" type="file">
+    </template>
+    <p v-else>You are not permitted to view this page.</p>
   </v-container>
 </template>
 
@@ -42,9 +41,9 @@ export default {
           }
         });
     },
-    resetCount(){
-      this.data = null
-      this.uploadedDescription = 0
+    resetCount() {
+      this.data = null;
+      this.uploadedDescription = 0;
     },
     uploadUserText() {
       //upload pathology.json file content on firebase
@@ -55,7 +54,7 @@ export default {
           // console.log("sucess");
         });
     },
-    downloadAllText(){
+    downloadAllText() {
       database()
         .ref("UserText")
         // .limitToLast(500)
