@@ -22,7 +22,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app flat dark color="teal" clipped-left absolute>
+    <v-toolbar app flat dark color="teal" clipped-left>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase white--text">
         <!-- <span>{{ title }}</span> -->

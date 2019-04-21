@@ -9,23 +9,37 @@
       <v-layout row wrap>
         <v-flex class="teal lighten-3 subheading pa-2">Reviews</v-flex>
       </v-layout>
-      <v-expansion-panel v-model="panel">
-        <v-expansion-panel-content v-for="(detail, key, i) in details" :key="i">
-          <template v-slot:header>
-            <div class="font-weight-medium text-capitalize">{{ userName(key) }}</div>
-            <v-spacer/>
-            <div class="font-weight-medium text-lowercase">{{ email(key) }}</div>
+      <v-list>
+        <v-list-group
+          v-model="panel[i]"
+          no-action
+          v-for="(detail, key, i) in details"
+          :key="i"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-avatar>
+              <img :src="avatar(key)">
+            </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title class="text-capitalize">{{ userName(key) }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ email(key) }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </template>
+          <v-divider/>
+          <v-container fluid>
           <v-layout row wrap justify-center>
-            <v-flex v-for="(value, title, j) in detail" :key="j" xs12 sm6 md6 lg6 xl2>
+            <v-flex v-for="(value, title, j) in detail" :key="j" xs12 sm6 md6 lg4 xl4>
               <div
                 class="text-capitalize subheading font-weight-bold pa-1 grey lighten-3"
               >{{title}}:</div>
               <div class="pa-2 grey lighten-5">{{value}}</div>
             </v-flex>
           </v-layout>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+          </v-container>
+        </v-list-group>
+      </v-list>
     </template>
   </v-container>
 </template>
@@ -62,6 +76,16 @@ export default {
             : uid
           : uid
         : uid;
+    },
+    avatar(uid){
+      const link = "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
+      return this.users
+        ? this.users[uid]
+          ? this.users[uid].avatar
+            ? this.users[uid].avatar
+            : link
+          : link
+        : link
     },
     getAllUsers() {
       database()

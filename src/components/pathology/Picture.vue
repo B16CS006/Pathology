@@ -21,19 +21,20 @@
             <info block v-bind:picture="picture"></info>
           </v-flex>
           <v-flex xs12 md6 v-if="userIsAuthenticated">
-            <review v-bind:details="pictureDetails" v-bind:pictureId="picture[0]" v-on:syncDetails="getDetails"/>
+            <review
+              v-bind:details="pictureDetails"
+              v-bind:pictureId="picture[0]"
+              v-on:syncDetails="getDetails"
+            />
           </v-flex>
         </v-layout>
-        <v-layout v-if="forum" row wrap justify-center>
-          <v-flex xs12>
-            <Forum v-bind:pictureId="picture[0]"/>
-          </v-flex>
-        </v-layout>
-        <v-layout v-else row wrap justify-center>
-          <v-flex xs12>
-            <AllReviews v-bind:details="pictureDetails"/>
-          </v-flex>
-        </v-layout>
+        <v-tabs color="teal lighten-3" centered>
+          <v-tabs-slider color="teal"></v-tabs-slider>
+          <v-tab href="#tab-1">All Reviews</v-tab>
+          <v-tab href='#tab-2' v-if="userIsAuthenticated">Forum</v-tab>
+          <v-tab-item value="tab-1"><AllReviews v-bind:details="pictureDetails"/></v-tab-item>
+          <v-tab-item value="tab-2" v-if="userIsAuthenticated"><Forum v-bind:pictureId="picture[0]"/></v-tab-item>
+        </v-tabs>
       </template>
       <p v-else>{{pictureId}} : No such Image found</p>
     </template>
@@ -44,15 +45,14 @@
 import PictureReview from "./Picture/Review.vue";
 import PictureInfo from "./Picture/Info.vue";
 import AllReviews from "./Picture/AllReviews.vue";
-import Forum from './Picture/forum.vue'
+import Forum from "./Picture/forum.vue";
 import { database } from "firebase";
 
 export default {
   props: ["pictureId"],
   data() {
     return {
-      pictureDetails: "loading",
-      forum:true
+      pictureDetails: "loading"
     };
   },
   computed: {
@@ -64,7 +64,7 @@ export default {
     },
     loading() {
       return this.$store.getters.loading;
-    },
+    }
   },
   methods: {
     getDetails() {
@@ -81,12 +81,12 @@ export default {
         });
     }
   },
-  beforeMount(){
-    this.getDetails()
+  beforeMount() {
+    this.getDetails();
   },
-  watch:{
-    picture(){
-      this.getDetails()
+  watch: {
+    picture() {
+      this.getDetails();
     }
   },
   components: {
