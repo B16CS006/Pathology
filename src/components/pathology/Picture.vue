@@ -24,7 +24,12 @@
             <review v-bind:details="pictureDetails" v-bind:pictureId="picture[0]" v-on:syncDetails="getDetails"/>
           </v-flex>
         </v-layout>
-        <v-layout row wrap justify-center>
+        <v-layout v-if="forum" row wrap justify-center>
+          <v-flex xs12>
+            <Forum v-bind:pictureId="picture[0]"/>
+          </v-flex>
+        </v-layout>
+        <v-layout v-else row wrap justify-center>
           <v-flex xs12>
             <AllReviews v-bind:details="pictureDetails"/>
           </v-flex>
@@ -39,13 +44,15 @@
 import PictureReview from "./Picture/Review.vue";
 import PictureInfo from "./Picture/Info.vue";
 import AllReviews from "./Picture/AllReviews.vue";
+import Forum from './Picture/forum.vue'
 import { database } from "firebase";
 
 export default {
   props: ["pictureId"],
   data() {
     return {
-      pictureDetails: "loading"
+      pictureDetails: "loading",
+      forum:true
     };
   },
   computed: {
@@ -85,7 +92,8 @@ export default {
   components: {
     review: PictureReview,
     info: PictureInfo,
-    AllReviews
+    AllReviews,
+    Forum
   }
 };
 </script>

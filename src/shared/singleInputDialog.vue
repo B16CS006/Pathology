@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="teal white--text title">Edit</v-card-title>
       <v-card-text>
-            <v-text-field :label="title" v-model="input" type="text" ></v-text-field>
+            <v-text-field autofocus :label="title" v-model="input" type="text" ></v-text-field>
       </v-card-text>
       <v-card-actions>
           <v-spacer/>

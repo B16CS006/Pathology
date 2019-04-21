@@ -54,6 +54,7 @@ export default {
         this.$store.dispatch('getCurrentUser')
       }).catch((error) => {
         console.log("error: ",error)
+        this.nameInputDialog = false
       })
     },
     updateAvatar(event){
@@ -62,6 +63,7 @@ export default {
         this.$store.dispatch('getCurrentUser')
       }).catch((error) => {
         console.log("error: ",error)
+        this.avatarInputDialog = false
       })
     }
   },
