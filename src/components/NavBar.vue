@@ -3,9 +3,9 @@
     <v-navigation-drawer clipped fixed app v-model="drawer" class="teal lighten-5">
       <v-list>
         <v-list-tile  router to="/profile">
-          <v-list-tile-action>
-            <v-icon>tag_faces</v-icon>
-          </v-list-tile-action>
+          <v-list-tile-avatar>
+            <img :src="avatar">
+          </v-list-tile-avatar>
           <v-list-tile-content v-if="currentUser">{{ currentUser.name }}</v-list-tile-content>
           <v-list-tile-content v-else>Newbie</v-list-tile-content>
         </v-list-tile>
@@ -90,6 +90,9 @@ export default {
     };
   },
   computed: {
+    avatar(){
+      return this.currentUser ? this.currentUser.avatar : null
+    },
     currentUser() {
       return this.$store.getters.currentUser
         ? this.$store.getters.currentUser

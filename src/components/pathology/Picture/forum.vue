@@ -28,31 +28,31 @@
         >
           <template v-slot:activator>
             <v-list-tile>
-                <v-list-tile-avatar>
-              <img :src="avatar(detail.by)">
-            </v-list-tile-avatar>
+              <v-list-tile-avatar>
+                <img :src="avatar(detail.by)">
+              </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{ detail.message }}</v-list-tile-title>
                 <v-list-tile-sub-title>{{ userName(detail.by) }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-
-               <v-btn fab small flat @click="replyDialog = true">
-                <v-icon>reply</v-icon>
-                <single-input-dialog
-                  :visible="replyDialog"
-                  value
-                  v-model="detail.dialog"
-                  title="Enter here"
-                  @close="replyDialog = false"
-                  @update="reply({message: $event, key: key})"
-                /></v-btn>
+                <v-btn fab small flat @click="replyDialog = true">
+                  <v-icon>reply</v-icon>
+                  <single-input-dialog
+                    :visible="replyDialog"
+                    value
+                    v-model="detail.dialog"
+                    title="Enter here"
+                    @close="replyDialog = false"
+                    @update="reply({message: $event, key: key})"
+                  />
+                </v-btn>
               </v-list-tile-action>
             </v-list-tile>
           </template>
           <v-divider/>
           <v-list-tile v-for="(reply, j) in detail.replies" :key="j">
-              <v-list-tile-avatar>
+            <v-list-tile-avatar>
               <img :src="avatar(reply.by)">
             </v-list-tile-avatar>
             <v-list-tile-content>
@@ -101,15 +101,14 @@ export default {
           : uid
         : uid;
     },
-    avatar(uid){
-      const link = "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
+    avatar(uid) {
       return this.users
         ? this.users[uid]
           ? this.users[uid].avatar
             ? this.users[uid].avatar
-            : link
-          : link
-        : link
+            : null
+          : null
+        : null
     },
     getAllUsers() {
       if (!this.currentUser) {
@@ -136,23 +135,25 @@ export default {
         });
     },
     create(event) {
-      database()
-        .ref("Forum")
-        .child(this.pictureId)
-        .push({ message: event, by: this.currentUser })
-        .then(() => {
-          this.createNewThreadDialog = false;
-          this.getForum();
-        })
-        .catch(error => {
-          this.createNewThreadDialog = false;
-          console.log(error);
-        });
+      if (event && event.length > 0) {
+        database()
+          .ref("Forum")
+          .child(this.pictureId)
+          .push({ message: event, by: this.currentUser })
+          .then(() => {
+            this.createNewThreadDialog = false;
+            this.getForum();
+          })
+          .catch(error => {
+            this.createNewThreadDialog = false;
+            console.log(error);
+          });
+      }
     },
     reply(event) {
-        console.log(event.key);
-        // return
-        
+      console.log(event.key);
+      // return
+
       database()
         .ref("Forum")
         .child(this.pictureId)
@@ -168,10 +169,10 @@ export default {
         });
     }
   },
-  watch:{
-      pictureId(){
-          this.getForum()
-      }
+  watch: {
+    pictureId() {
+      this.getForum();
+    }
   },
   created() {
     this.getAllUsers();

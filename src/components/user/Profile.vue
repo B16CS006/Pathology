@@ -72,7 +72,7 @@ export default {
         return this.$store.getters.currentUser ? this.$store.getters.currentUser : {}
     },
     avatar(){
-      return this.currentUser.avatar ? this.currentUser.avatar : "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
+      return this.currentUser.avatar
     }
   }
 };

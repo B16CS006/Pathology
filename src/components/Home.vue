@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid>
-    <v-layout row>
-      <h1>Home</h1>
-    </v-layout>
-    <Pictures v-if="pictures"></Pictures>
-  </v-container>
+  <div class="pa-3">
+    <h1 class="subheading grey--text">Home</h1>
+    <v-container fluid>
+      <Pictures v-if="pictures"></Pictures>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -15,10 +15,10 @@ export default {
   data() {
     return {};
   },
-  computed:{
-      pictures(){
-          return this.$store.getters.pictures
-      }
+  computed: {
+    pictures() {
+      return this.$store.getters.pictures;
+    }
   },
   components: { Pictures },
   methods: {

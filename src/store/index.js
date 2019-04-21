@@ -51,6 +51,7 @@ export const store = new Vuex.Store({
                         const newUser = {
                             uid: user.user.uid,
                             role: 'user',
+                            avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg",
                             email: payload.email,
                             name: payload.name
                         }
@@ -78,7 +79,8 @@ export const store = new Vuex.Store({
                         uid: user.user.uid,
                         email: payload.email,
                         name: payload.email,
-                        role: 'unknown'
+                        role: 'unknown',
+                        avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
                     })
                     this.dispatch('getCurrentUser')
                     // firebase.database().ref('Users/' + user.user.uid).once('value').then(data => {
@@ -90,7 +92,8 @@ export const store = new Vuex.Store({
                     //         uid: user.user.uid,
                     //         email: payload.email,
                     //         name: payload.email,
-                    //         role: 'unknown'
+                    //         role: 'unknown',
+                    //         avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
                     //     })
                     // })
                 }
@@ -107,7 +110,8 @@ export const store = new Vuex.Store({
                 uid: user.uid,
                 email: user.email,
                 name: user.email,
-                role: 'unknown'
+                role: 'unknown',
+                avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
             }
             commit('setUser', currentUser)
             this.dispatch('getCurrentUser')
@@ -120,7 +124,8 @@ export const store = new Vuex.Store({
             //         uid: user.uid,
             //         email: payload.email,
             //         name: payload.email,
-            //         role: 'unknown'
+            //         role: 'unknown',
+            //         avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
             //     })
             // })
         },
