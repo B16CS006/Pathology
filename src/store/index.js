@@ -185,7 +185,7 @@ export const store = new Vuex.Store({
         //         }
         //     })
         // },
-        getPictures({ commit, state }) {
+        getPictures({ commit }) {
             commit('setLoading', true)
             firebase.database().ref('Pictures').once('value').then((data) => {
                 console.log('successfully get pictures from firebase database')
@@ -194,7 +194,6 @@ export const store = new Vuex.Store({
             }).catch(error => {
                 commit('setLoading', false)
             })
-
         },
         getUpdatedPictures({ commit }, uid) {
             firebase.database().ref('UpdatedPictures').child(uid).once('value').then((data) => {
