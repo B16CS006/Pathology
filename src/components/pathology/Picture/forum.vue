@@ -19,24 +19,16 @@
           />
         </v-btn>
       </v-layout>
-      <v-list v-if="details  && users">
-        <v-list-group
-          v-model="panel[i]"
-          no-action
+      <v-expansion-panel>
+        <v-expansion-panel-content
           v-for="(detail, key, i) in details"
-          :key="i"
-        >
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-avatar>
-                <img :src="avatar(detail.by)">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ detail.message }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ userName(detail.by) }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn fab small flat ripple @click="reply(key)">
+          :key="i">
+          <template v-slot:header>
+            <v-layout row align-center>
+                <v-avatar size="38" class="mr-2"><img :src="avatar(detail.by)"></v-avatar>
+                <span><strong>{{ userName(detail.by) }} - </strong>{{ detail.message }}</span>
+              <v-spacer/>
+              <v-btn fab small flat ripple @click.native.stop="reply(key)">
                   <v-icon>reply</v-icon>
                   <single-input-dialog
                     :visible="replyDialog"
@@ -44,23 +36,18 @@
                     title="Enter here"
                     @close="replyDialog = false"
                     @update="sendReply"
-                  /> <!--@update="reply({message: $event, key: key})" -->
+                  />
                 </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
+            </v-layout>
           </template>
-          <v-divider/>
-          <v-list-tile v-for="(reply, j) in detail.replies" :key="j">
-            <v-list-tile-avatar>
-              <img :src="avatar(reply.by)">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ reply.message }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ userName(reply.by) }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
-      </v-list>
+          <v-card >
+            <v-layout class="ml-5" row align-center v-for="(reply, j) in detail.replies" :key="j">
+              <v-avatar size="35" class="ml-4"><img :src="avatar(reply.by)"></v-avatar>
+              <v-card-text><strong>{{ userName(reply.by) }} - </strong>{{ reply.message }}</v-card-text>
+            </v-layout>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </template>
   </v-container>
 </template>
@@ -72,7 +59,6 @@ export default {
   props: ["pictureId"],
   data() {
     return {
-      panel: [],
       users: null,
       details: null,
       createNewThreadDialog: false,
