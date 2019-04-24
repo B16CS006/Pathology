@@ -8,24 +8,25 @@
       <v-card-actions>
           <v-spacer/>
         <v-btn color="orange" flat @click="show = false"><v-icon>cancel</v-icon></v-btn>
-        <v-btn color="green" flat @click="done" :disabled="clickedDone"><v-icon>done</v-icon></v-btn>
+        <v-btn color="green" flat @click="done" :disabled="!done_clickable"><v-icon>done</v-icon></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import { type } from 'os';
 export default {
   props: ["visible","title","value"],
   data() {
     return {
       input: "",
-      clickedDone:false
+      done_clickable:false
     };
   },
   methods:{
       done(){
-          this.clickedDone = true
+          this.done_clickable = false
           this.$emit('update',this.input)
       }
   },
@@ -33,8 +34,14 @@ export default {
       visible(){
           if(this.visible){
               this.input = this.value
-              this.clickedDone=false
           }
+      },
+      input(){
+        if(typeof(this.input) == typeof('') && this.input.length > 0){
+          this.done_clickable = true
+        }else{
+          this.done_clickable = false
+        }
       }
   },
   computed: {

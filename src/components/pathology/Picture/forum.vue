@@ -21,7 +21,7 @@
       </v-layout>
       <v-list v-if="details  && users">
         <v-list-group
-          v-model="detail.active"
+          v-model="panel[i]"
           no-action
           v-for="(detail, key, i) in details"
           :key="i"
@@ -36,16 +36,15 @@
                 <v-list-tile-sub-title>{{ userName(detail.by) }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-btn fab small flat @click="replyDialog = true">
+                <v-btn fab small flat ripple @click="reply(key)">
                   <v-icon>reply</v-icon>
                   <single-input-dialog
                     :visible="replyDialog"
-                    value
                     v-model="detail.dialog"
                     title="Enter here"
                     @close="replyDialog = false"
-                    @update="reply({message: $event, key: key})"
-                  />
+                    @update="sendReply"
+                  /> <!--@update="reply({message: $event, key: key})" -->
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
@@ -77,7 +76,8 @@ export default {
       users: null,
       details: null,
       createNewThreadDialog: false,
-      replyDialog: false
+      replyDialog: false,
+      sendReplyTo: null
     };
   },
   computed: {
@@ -121,7 +121,7 @@ export default {
           this.users = data.val();
         })
         .catch(error => {
-          // console.log(error, "while getting users");
+          console.log(error, "while getting users");
         });
     },
     getForum() {
@@ -131,8 +131,10 @@ export default {
         .once("value")
         .then(data => {
           this.details = data.val();
-          console.log(this.details);
-        });
+          // console.log(this.details);
+        }).catch(error => {
+          console.log(error)
+        })
     },
     create(event) {
       if (event && event.length > 0) {
@@ -150,23 +152,27 @@ export default {
           });
       }
     },
-    reply(event) {
-      console.log(event.key);
-      // return
-
+    sendReply(event) {
       database()
         .ref("Forum")
         .child(this.pictureId)
-        .child(event.key)
+        .child(this.sendReplyTo)
         .child("replies")
-        .push({ by: this.currentUser, message: event.message })
+        .push({ by: this.currentUser, message: event })
         .then(() => {
           this.replyDialog = false;
+          this.sendReplyTo = null
           this.getForum();
         })
         .catch(error => {
-          this.replyDialog = false;
+          this.replyDialog = false
+          this.sendReplyTo = null
+          console.log(error)
         });
+    },
+    reply(key){
+      this.sendReplyTo = key
+      this.replyDialog = true
     }
   },
   watch: {
