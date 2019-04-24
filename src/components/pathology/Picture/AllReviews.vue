@@ -9,37 +9,31 @@
       <v-layout row wrap>
         <v-flex class="teal lighten-3 subheading pa-2">Reviews</v-flex>
       </v-layout>
-      <v-list>
-        <v-list-group
-          v-model="panel[i]"
-          no-action
-          v-for="(detail, key, i) in details"
-          :key="i"
-        >
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-avatar>
-              <img :src="avatar(key)">
-            </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title class="text-capitalize">{{ userName(key) }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ email(key) }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+      <v-expansion-panel>
+        <v-expansion-panel-content v-for="(detail, key, i) in details" :key="i">
+          <template v-slot:header>
+            <v-layout row align-center>
+              <v-avatar size="38" class="mr-2">
+                <img :src="avatar(key)">
+              </v-avatar>
+              <span>
+                <strong>{{ userName(key) }}</strong><br>
+                {{ email(key) }}
+              </span>
+            </v-layout>
           </template>
-          <v-divider/>
-          <v-container fluid>
-          <v-layout row wrap justify-center>
-            <v-flex v-for="(value, title, j) in detail" :key="j" xs12 sm6 md6 lg4 xl4>
-              <div
-                class="text-capitalize subheading font-weight-bold pa-1 grey lighten-3"
-              >{{title}}:</div>
-              <div class="pa-2 grey lighten-5">{{value}}</div>
-            </v-flex>
-          </v-layout>
-          </v-container>
-        </v-list-group>
-      </v-list>
+          <v-card>
+            <v-layout row wrap justify-center>
+              <v-flex v-for="(value, title, j) in detail" :key="j" xs12 sm6 md6 lg4 xl4>
+                <div
+                  class="text-capitalize subheading font-weight-bold pa-1 grey lighten-3"
+                >{{title}}:</div>
+                <div style="word-wrap:break-word" class="pa-2 grey lighten-5">{{value}}</div>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </template>
   </v-container>
 </template>
@@ -77,14 +71,14 @@ export default {
           : uid
         : uid;
     },
-    avatar(uid){
+    avatar(uid) {
       return this.users
         ? this.users[uid]
           ? this.users[uid].avatar
             ? this.users[uid].avatar
             : null
           : null
-        : null
+        : null;
     },
     getAllUsers() {
       database()
