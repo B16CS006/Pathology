@@ -19,41 +19,45 @@
         <v-layout row wrap class="pb-3">
           <v-flex xs12 sm6>
             <div class="subheading px-1" >Name:</div>
-            <div class="px-2 pb-2">{{myDetails.patientName}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.patientName}}</div>
           </v-flex>
           <v-flex xs12 sm6>
             <div class="subheading px-1" >Age:</div>
-            <div class="px-2 pb-2">{{myDetails.patientAge}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.patientAge}}</div>
           </v-flex>
           <v-flex xs12 sm6>
             <div class="subheading px-1" >Hospital:</div>
-            <div class="px-2 pb-2">{{myDetails.patientHospital}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.patientHospital}}</div>
           </v-flex>
           <v-flex xs12 sm6>
             <div class="subheading px-1" >Biopsy:</div>
-            <div class="px-2 pb-2">{{myDetails.patientBiopsy}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.patientBiopsy}}</div>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Tissue:</div>
-            <div class="px-2 pb-2">{{myDetails.tissue}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.tissue}}</div>
           </v-flex>
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Macroscopic Examination:</div>
-            <div class="px-2 pb-2">{{myDetails.macroscopicExamination}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.macroscopicExamination}}</div>
           </v-flex>
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Clinical Diagnosis:</div>
-            <div class="px-2 pb-2">{{myDetails.clinicalDiagnosis}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.clinicalDiagnosis}}</div>
           </v-flex>
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Gross Finding:</div>
-            <div class="px-2 pb-2">{{myDetails.grossFinding}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.grossFinding}}</div>
           </v-flex>
           <v-flex xs12>
             <div class="subheading font-weight-bold px-1" >Report:</div>
-            <div class="px-2 pb-2">{{myDetails.report}}</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.report}}</div>
+          </v-flex>   
+          <v-flex xs12>
+            <div class="subheading font-weight-bold px-1" >Signature:</div>
+            <div style="word-wrap:break-word" class="px-2 pb-2">{{myDetails.signature}}</div>
           </v-flex>          
           <v-flex xs12>
             <v-checkbox label="Description is useful" readonly v-model="myDetails.useful"/>

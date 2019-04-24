@@ -1,7 +1,10 @@
 <template>
-  <v-container fluid>
-    <span v-html="about"></span>
-  </v-container>
+  <div class="pa-3">
+    <h1 class="subheading grey--text">About</h1>
+    <v-container fluid>
+      <span v-html="about"></span>
+    </v-container>
+  </div>
 </template>
 
 

@@ -2,11 +2,11 @@
 <v-container>
   <!-- <v-dialog max-width="500"> -->
     <!-- <v-btn flat slot="activator">Sign Up</v-btn> -->
-    <!-- <v-layout row v-if="error">
+    <v-layout row v-if="error">
       <v-flex xs12 sm6 offset-sm3>
         <app-alert @dismissed="onDismissed" :text='error.message'></app-alert>
       </v-flex>
-    </v-layout> -->
+    </v-layout>
     <v-card>
       <v-card-title class="teal white--text">
         <h2>Sign Up</h2>
@@ -37,6 +37,7 @@
                 v-model="name"
                 type="Name"
                 prepend-icon="account_circle"
+                :rules="required"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -44,12 +45,12 @@
             <v-flex xs12>
               <v-text-field
                 name="signuppassword"
-                label="Passowrd"
+                label="Password"
                 id="signuppassword"
                 v-model="signuppassword"
                 type="password"
                 prepend-icon="vpn_key"
-                :rules="inputRule"
+                :rules="[lengthRule(signuppassword,6)]"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -103,7 +104,7 @@
                   <v-flex xs12>
                     <v-text-field
                       name="signuppassword"
-                      label="Passowrd"
+                      label="Password"
                       id="signuppassword"
                       v-model="signuppassword"
                       type="password"
@@ -184,9 +185,12 @@ export default {
       }
     },
     onDismissed(){
-      console.log('dismissed')
+      // console.log('dismissed')
       this.$store.dispatch('clearError')
     }
+  },
+  created(){
+    this.onDismissed()
   },
   mixins:[Mixins]
 };

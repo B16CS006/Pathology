@@ -12,7 +12,6 @@ export const store = new Vuex.Store({
         pictures: null,
         updatedPictures: null,
         user: null,
-        // picture: null,
         loading: null,
         error: null,
         contacts: null
@@ -52,12 +51,13 @@ export const store = new Vuex.Store({
                         const newUser = {
                             uid: user.user.uid,
                             role: 'user',
+                            avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg",
                             email: payload.email,
                             name: payload.name
                         }
                         commit('setUser', newUser)
                         // console.log(newUser)
-                        firebase.database().ref('Users/'+user.user.uid).set(newUser)
+                        firebase.database().ref('Users/' + user.user.uid).set(newUser)
                     }
                 )
                 .catch(
@@ -68,25 +68,34 @@ export const store = new Vuex.Store({
                     }
                 )
         },
-        signIn({ commit }, payload) {
+        signIn({ commit, actions }, payload) {
             // console.log('Signing In')
             commit('setLoading', true)
             commit('clearError')
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password).then(
                 user => {
                     commit('setLoading', false)
-                    firebase.database().ref('Users/'+ user.user.uid).once('value').then(data => {
-                        // console.log('setUser',data.val())
-                        commit('setUser', data.val())
-                    }).catch(error =>{
-                        console.log(error)
-                        commit('setUser',{
-                            uid: user.user.uid,
-                            email: payload.email,
-                            name: payload.email,
-                            role: 'unknown'
-                        })
+                    commit('setUser', {
+                        uid: user.user.uid,
+                        email: payload.email,
+                        name: payload.email,
+                        role: 'unknown',
+                        avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
                     })
+                    this.dispatch('getCurrentUser')
+                    // firebase.database().ref('Users/' + user.user.uid).once('value').then(data => {
+                    //     // console.log('setUser',data.val())
+                    //     commit('setUser', data.val())
+                    // }).catch(error => {
+                    //     console.log(error)
+                    //     commit('setUser', {
+                    //         uid: user.user.uid,
+                    //         email: payload.email,
+                    //         name: payload.email,
+                    //         role: 'unknown',
+                    //         avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
+                    //     })
+                    // })
                 }
             ).catch(
                 error => {
@@ -96,26 +105,29 @@ export const store = new Vuex.Store({
                 }
             )
         },
-        autoSignIn({ commit }, user) {
+        autoSignIn({ commit, actions }, user) {
             const currentUser = {
                 uid: user.uid,
                 email: user.email,
                 name: user.email,
-                role: 'unknown'
+                role: 'unknown',
+                avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
             }
             commit('setUser', currentUser)
-            firebase.database().ref('Users/'+ user.uid).once('value').then(data => {
-                // console.log('setUser',data.val())
-                commit('setUser', data.val())
-            }).catch(error =>{
-                console.log(error)
-                commit('setUser',{
-                    uid: user.uid,
-                    email: payload.email,
-                    name: payload.email,
-                    role: 'unknown'
-                })
-            })
+            this.dispatch('getCurrentUser')
+            // firebase.database().ref('Users/'+ user.uid).once('value').then(data => {
+            //     // console.log('setUser',data.val())
+            //     commit('setUser', data.val())
+            // }).catch(error =>{
+            //     console.log(error)
+            //     commit('setUser',{
+            //         uid: user.uid,
+            //         email: payload.email,
+            //         name: payload.email,
+            //         role: 'unknown',
+            //         avatar: "http://images.goodsmile.info/cgm/images/product/20160805/5858/40556/large/af31d8e81b224d2f38f554e5f2b5cd40.jpg"
+            //     })
+            // })
         },
         signOut({ commit }) {
             // console.log('sign out')
@@ -173,7 +185,7 @@ export const store = new Vuex.Store({
         //         }
         //     })
         // },
-        getPictures({ commit, state }) {
+        getPictures({ commit }) {
             commit('setLoading', true)
             firebase.database().ref('Pictures').once('value').then((data) => {
                 console.log('successfully get pictures from firebase database')
@@ -182,7 +194,6 @@ export const store = new Vuex.Store({
             }).catch(error => {
                 commit('setLoading', false)
             })
-
         },
         getUpdatedPictures({ commit }, uid) {
             firebase.database().ref('UpdatedPictures').child(uid).once('value').then((data) => {
@@ -195,7 +206,12 @@ export const store = new Vuex.Store({
             firebase.database().ref('Contacts').once('value').then((data) => {
                 commit('setContacts', data.val())
             })
-
+        },
+        getCurrentUser({ commit, state }) {
+            firebase.database().ref('Users/' + state.user.uid).once('value').then(data => {
+                // console.log('setUser',data.val())
+                commit('setUser', data.val())
+            })
         }
     },
     getters: {
@@ -212,22 +228,22 @@ export const store = new Vuex.Store({
             return pictureId => {
                 if (pictureId === undefined || pictureId === null || state.pictures === undefined || state.pictures === null) {
                     return null
-                }else if(pictureId < state.pictures.length){
+                } else if (pictureId < state.pictures.length) {
                     let temp = state.pictures[pictureId]
                     temp[2] = pictureId
                     return temp
-                }else{
+                } else {
                     let index = -1
-                let temp = state.pictures.find((picture) => {
-                    index += 1
-                    return picture[0] === pictureId
-                })
+                    let temp = state.pictures.find((picture) => {
+                        index += 1
+                        return picture[0] === pictureId
+                    })
 
-                if (temp === undefined)
-                    temp = null
-                else
-                    temp[2] = index
-                return temp
+                    if (temp === undefined)
+                        temp = null
+                    else
+                        temp[2] = index
+                    return temp
                 }
             }
         },

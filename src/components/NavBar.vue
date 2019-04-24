@@ -1,17 +1,11 @@
 <template>
   <nav>
-    <v-navigation-drawer
-      :clipped="$vuetify.breakpoint.mdAndUp"
-      fixed
-      app
-      v-model="drawer"
-      class="teal lighten-5"
-    >
+    <v-navigation-drawer clipped fixed app v-model="drawer" class="teal lighten-5">
       <v-list>
-        <v-list-tile>
-          <v-list-tile-action>
-            <v-icon>tag_faces</v-icon>
-          </v-list-tile-action>
+        <v-list-tile  router to="/profile">
+          <v-list-tile-avatar>
+            <img :src="avatar">
+          </v-list-tile-avatar>
           <v-list-tile-content v-if="currentUser">{{ currentUser.name }}</v-list-tile-content>
           <v-list-tile-content v-else>Newbie</v-list-tile-content>
         </v-list-tile>
@@ -28,7 +22,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app flat dark color="teal" :clipped-left="$vuetify.breakpoint.mdAndUp">
+    <v-toolbar app flat dark color="teal" clipped-left>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase white--text">
         <!-- <span>{{ title }}</span> -->
@@ -43,7 +37,6 @@
         append-icon="search"
         label="Search"
         solo-inverted
-        class="hidden-sm-and-down"
       ></v-text-field>
       <div class="hidden-sm-and-down" v-for="item in toolbarItems" :key="item.title">
         <v-btn v-if="item.icon" flat :to="item.link">
@@ -63,15 +56,15 @@
           </v-btn>
         </template>
         <v-list v-for="item in toolbarItems" :key="item.title">
-            <v-btn v-if="item.icon" flat :to="item.link">
-              <span>{{ item.title }}</span>
-              <v-icon right>{{ item.icon }}</v-icon>
-            </v-btn>
-            <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
-            <v-btn flat v-if="userIsAuthenticated" @click="onSignOut">
-              Logout
-              <v-icon right dark>exit_to_app</v-icon>
-            </v-btn>
+          <v-btn v-if="item.icon" flat :to="item.link">
+            <span>{{ item.title }}</span>
+            <v-icon right>{{ item.icon }}</v-icon>
+          </v-btn>
+          <v-btn v-else flat :to="item.link">{{ item.title }}</v-btn>
+          <v-btn flat v-if="userIsAuthenticated" @click="onSignOut">
+            Logout
+            <v-icon right dark>exit_to_app</v-icon>
+          </v-btn>
         </v-list>
       </v-menu>
     </v-toolbar>
@@ -97,6 +90,9 @@ export default {
     };
   },
   computed: {
+    avatar(){
+      return this.currentUser ? this.currentUser.avatar : null
+    },
     currentUser() {
       return this.$store.getters.currentUser
         ? this.$store.getters.currentUser
@@ -132,19 +128,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      const maxLength = this.$store.getters.pictures.length
-      if(this.search === null){
-        return
-      }else if(this.search.toLowerCase() === 'random'){
-        this.search = Math.floor(Math.random()* maxLength)
+      const maxLength = this.$store.getters.pictures.length;
+      if (this.search === null) {
+        return;
+      } else if (this.search.toLowerCase() === "random") {
+        this.search = Math.floor(Math.random() * maxLength);
       }
 
-      if(parseInt(this.search) < maxLength){
-        let id = parseInt(this.search)
-        if(id<0)
-          id = 0
-        this.$router.push('/picture/' + this.$store.getters.pictures[id][0])
-      }else{
+      if (parseInt(this.search) < maxLength) {
+        let id = parseInt(this.search);
+        if (id < 0) id = 0;
+        this.$router.push("/picture/" + this.$store.getters.pictures[id][0]);
+      } else {
         this.$router.push("/picture/" + this.search);
       }
       this.search = null;
