@@ -1,0 +1,13 @@
+git add .
+git add -A
+git add -all
+
+git status
+
+git commit -m "commit"
+
+git push origin master
+
+git remote -V
+
+git add remote "url"

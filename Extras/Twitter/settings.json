@@ -1,0 +1,14 @@
+{
+	"always_use_https": true,
+	"discoverable_by_email": true,
+	"geo_enabled": true,
+	"language": "en",
+	"protected": false,
+	"screen_name": "Kakarot",
+	"show_all_inline_media": false,
+	"sleep{time":{
+		"enabled": false,
+		"end_time": null,
+		"start_time": null
+	}
+}
